@@ -92,28 +92,8 @@ fun LoginContainer(
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(26.dp))
-
-
-        CustomSocialMediaButton(
-            title = "Sign in with google",
-            icon = R.drawable.ic_gmail_logo,
-            modifier = Modifier,
-            onClick = { }
-        )
-
-
-
 
     }
 
-    Column(modifier = modifier.fillMaxHeight(0.2f)) {
-        CustomTextButtonQuery(
-            title = "Don\'t have an account?",
-            clickableText = "Sign Up For Free"
-        ) {
-
-        }
-    }
 
 }

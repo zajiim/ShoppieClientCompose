@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.shoppieclient.ui.theme.SubTitleColor
 import com.example.shoppieclient.ui.theme.TitleColor
 
@@ -31,7 +32,8 @@ fun CustomTitle(
         Text(
             text = title, style = MaterialTheme.typography.titleLarge.copy(
                 color = TitleColor,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
             )
         )
         Spacer(modifier = Modifier.height(4.dp))

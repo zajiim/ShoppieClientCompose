@@ -122,6 +122,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
 
             signInState.value = try {
+                Log.e(TAG, "onLoginClick: >>>>>>>>", )
 
                 val loginResult = shoppieRepo.signIn(
                     SignInRequest(
@@ -130,9 +131,12 @@ class LoginViewModel @Inject constructor(
                     )
                 )
 
+                Log.e(TAG, "after onLoginClick: >>>>>>>>", )
                 Log.e(TAG, loginResult.token)
 
                 dataStoreUseCases.saveTokenUseCase(loginResult.token)
+
+                Log.e(TAG, "after datastore: >>>>>>>>", )
 
                 signInState.value.copy(
                     isSuccessfullyLoggedIn = true,
@@ -160,7 +164,7 @@ class LoginViewModel @Inject constructor(
                     errorMsgLoginProcess = e.message
                 )
             } finally {
-                signInState.value.copy(
+                signInState.value = signInState.value.copy(
                     isLoading = false
                 )
             }
