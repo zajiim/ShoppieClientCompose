@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.shoppieclient.presentation.auth.login.LoginScreen
 
 
 fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
@@ -14,6 +15,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
     ) {
         composable(route = AuthScreen.Login.route) {
             //login screen
+            LoginScreen()
         }
 
         composable(route = AuthScreen.SignUp.route) {

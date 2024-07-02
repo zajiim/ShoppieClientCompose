@@ -4,7 +4,12 @@ import android.app.Application
 import com.example.shoppieclient.data.datamanager.LocalUserManagerImpl
 import com.example.shoppieclient.data.remote.api.ShoppieApi
 import com.example.shoppieclient.data.repository.ShoppieRepoImpl
+import com.example.shoppieclient.domain.auth.models.signin.SignInEmailValidationType
+import com.example.shoppieclient.domain.auth.models.signin.SignInPasswordValidationType
 import com.example.shoppieclient.domain.auth.repository.ShoppieRepo
+import com.example.shoppieclient.domain.auth.use_cases.signIn.SignInValidationUseCases
+import com.example.shoppieclient.domain.auth.use_cases.signIn.ValidationEmailUseCase
+import com.example.shoppieclient.domain.auth.use_cases.signIn.ValidationPasswordUseCase
 import com.example.shoppieclient.domain.main.datamanager.LocalUserManager
 import com.example.shoppieclient.domain.main.use_cases.DataStoreUseCases
 import com.example.shoppieclient.domain.main.use_cases.ReadOnBoardingUseCase
@@ -66,6 +71,27 @@ object ShoppieAppModule {
     fun provideAuthRepo(api: ShoppieApi): ShoppieRepo {
         return ShoppieRepoImpl(api)
     }
+
+    @Provides
+    @Singleton
+    fun provideValidationEmailUseCase(): ValidationEmailUseCase {
+        return ValidationEmailUseCase()
+    }
+
+    @Provides
+    @Singleton
+    fun provideValidationPasswordUseCase(): ValidationPasswordUseCase {
+        return ValidationPasswordUseCase()
+    }
+
+    @Provides
+    @Singleton
+    fun provideValidationUseCases(
+        validationEmailUseCase: ValidationEmailUseCase,
+        validationPasswordUseCase: ValidationPasswordUseCase
+    ): SignInValidationUseCases = SignInValidationUseCases(
+        validationEmailUseCase, validationPasswordUseCase
+    )
 
 
 }

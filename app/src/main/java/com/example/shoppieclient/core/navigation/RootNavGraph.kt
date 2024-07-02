@@ -2,25 +2,33 @@ package com.example.shoppieclient.core.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.shoppieclient.presentation.auth.main.MainActivityViewModel
 import com.example.shoppieclient.presentation.auth.main.MainScreen
+import com.example.shoppieclient.presentation.on_boarding.OnBoardingViewModel
 import com.example.shoppieclient.presentation.on_boarding.OnboardingScreen
 
 @Composable
-fun RootNavGraph() {
+fun RootNavGraph(mainActivityViewModel: MainActivityViewModel = hiltViewModel()) {
 
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
         route = Graph.ROOT,
-        startDestination = Graph.ON_BOARDING
+//        startDestination = Graph.ON_BOARDING,
+        startDestination = mainActivityViewModel.startDestination
     ) {
 
         composable(Graph.ON_BOARDING) {
-            OnboardingScreen(navController)
+            val onBoardingViewModel: OnBoardingViewModel = hiltViewModel()
+            OnboardingScreen(
+                navController = navController,
+                event = onBoardingViewModel::onEvent
+            )
         }
 
         authNavGraph(navController)

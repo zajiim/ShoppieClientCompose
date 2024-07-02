@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.shoppieclient.core.navigation.Graph
 import com.example.shoppieclient.domain.auth.models.on_boarding.OnBoardingPageModel
 import com.example.shoppieclient.presentation.on_boarding.components.CustomButton
 import com.example.shoppieclient.presentation.on_boarding.components.CustomPagerIndicator
@@ -30,7 +31,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    event: (OnBoardingEvent) -> Unit
 ) {
     val pages = listOf(
         OnBoardingPageModel.First, OnBoardingPageModel.Second, OnBoardingPageModel.Third
@@ -97,7 +99,8 @@ fun OnboardingScreen(
                     onClick = {
                         scope.launch {
                             if(pagerState.currentPage == 2) {
-                                // TODO:  Datastore and navigate to main
+                                event(OnBoardingEvent.saveOnBoardingData)
+                                navController.navigate(route = Graph.AUTH)
                             } else {
                                 pagerState.animateScrollToPage(
                                     page = pagerState.currentPage + 1

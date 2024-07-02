@@ -11,6 +11,7 @@ import com.example.shoppieclient.data.remote.api.ShoppieApi
 import com.example.shoppieclient.domain.main.use_cases.DataStoreUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -32,29 +33,55 @@ class MainActivityViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            dataStoreUseCase.readOnBoardingUseCase().onEach { onBoardingValue ->
+            dataStoreUseCase.readOnBoardingUseCase().collect { onBoardingValue ->
                 Log.e(TAG, "onboarding value ==> $onBoardingValue")
                 if (onBoardingValue) {
-                    dataStoreUseCase.readTokenUseCase().onEach { token ->
-                        Log.e(TAG, "token value ==> $token")
-                        val isTokenValid = token?.let { shoppieApi.isTokenValid(it) }
-                        startDestination = if (isTokenValid?.status == true) {
-                            Log.e(TAG, "token value true case ==> $token")
-                            Graph.MAIN
-                        } else {
-                            Log.e(TAG, "token value else case ==> $token")
-                            Graph.AUTH
-                        }
-                        delay(300)
-                        splashCondition = false
-                    }.launchIn(viewModelScope)
+                    startDestination = Graph.AUTH
+                    val token = dataStoreUseCase.readTokenUseCase().firstOrNull()
+                    Log.e(TAG, "token value ==> $token")
+                    val isTokenValid = token?.let { shoppieApi.isTokenValid(it) }
+                    startDestination = if (isTokenValid?.status == true) {
+                        Log.e(TAG, "token value true case ==> $token")
+                        Graph.MAIN
+                    } else {
+                        Log.e(TAG, "token value else case ==> $token")
+                        Graph.AUTH
+                    }
                 } else {
                     Log.e(TAG, "onboarding value false ==>")
                     startDestination = Graph.ON_BOARDING
-                    splashCondition = false
                 }
-            }.launchIn(viewModelScope)
+                delay(300)
+                splashCondition = false
+            }
         }
     }
+
+//    init {
+//        viewModelScope.launch {
+//            dataStoreUseCase.readOnBoardingUseCase().onEach { onBoardingValue ->
+//                Log.e(TAG, "onboarding value ==> $onBoardingValue")
+//                if (onBoardingValue) {
+//                    dataStoreUseCase.readTokenUseCase().onEach { token ->
+//                        Log.e(TAG, "token value ==> $token")
+//                        val isTokenValid = token?.let { shoppieApi.isTokenValid(it) }
+//                        startDestination = if (isTokenValid?.status == true) {
+//                            Log.e(TAG, "token value true case ==> $token")
+//                            Graph.MAIN
+//                        } else {
+//                            Log.e(TAG, "token value else case ==> $token")
+//                            Graph.AUTH
+//                        }
+//                        delay(300)
+//                        splashCondition = false
+//                    }.launchIn(viewModelScope)
+//                } else {
+//                    Log.e(TAG, "onboarding value false ==>")
+//                    startDestination = Graph.ON_BOARDING
+//                    splashCondition = false
+//                }
+//            }.launchIn(viewModelScope)
+//        }
+//    }
 
 }
