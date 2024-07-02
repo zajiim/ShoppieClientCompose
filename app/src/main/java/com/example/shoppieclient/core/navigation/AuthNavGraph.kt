@@ -1,11 +1,11 @@
 package com.example.shoppieclient.core.navigation
 
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.shoppieclient.presentation.auth.login.LoginScreen
+import com.example.shoppieclient.presentation.auth.signin.LoginScreen
+import com.example.shoppieclient.presentation.auth.signup.SignUpScreen
 
 
 fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
@@ -15,11 +15,11 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
     ) {
         composable(route = AuthScreen.Login.route) {
             //login screen
-            LoginScreen()
+            LoginScreen(navController = navController)
         }
 
         composable(route = AuthScreen.SignUp.route) {
-            //signup screen
+            SignUpScreen(navController = navController)
         }
 
         composable(route = AuthScreen.ForgotPassword.route) {

@@ -4,12 +4,15 @@ import android.app.Application
 import com.example.shoppieclient.data.datamanager.LocalUserManagerImpl
 import com.example.shoppieclient.data.remote.api.ShoppieApi
 import com.example.shoppieclient.data.repository.ShoppieRepoImpl
-import com.example.shoppieclient.domain.auth.models.signin.SignInEmailValidationType
-import com.example.shoppieclient.domain.auth.models.signin.SignInPasswordValidationType
 import com.example.shoppieclient.domain.auth.repository.ShoppieRepo
 import com.example.shoppieclient.domain.auth.use_cases.signIn.SignInValidationUseCases
-import com.example.shoppieclient.domain.auth.use_cases.signIn.ValidationEmailUseCase
-import com.example.shoppieclient.domain.auth.use_cases.signIn.ValidationPasswordUseCase
+import com.example.shoppieclient.domain.auth.use_cases.signIn.SignInValidationEmailUseCase
+import com.example.shoppieclient.domain.auth.use_cases.signIn.SignInValidationPasswordUseCase
+import com.example.shoppieclient.domain.auth.use_cases.signUp.SignUpConfirmPasswordUseCase
+import com.example.shoppieclient.domain.auth.use_cases.signUp.SignUpNameValidationUseCase
+import com.example.shoppieclient.domain.auth.use_cases.signUp.SignUpValidationEmailUseCase
+import com.example.shoppieclient.domain.auth.use_cases.signUp.SignUpValidationPasswordUseCase
+import com.example.shoppieclient.domain.auth.use_cases.signUp.SignUpValidationUseCases
 import com.example.shoppieclient.domain.main.datamanager.LocalUserManager
 import com.example.shoppieclient.domain.main.use_cases.DataStoreUseCases
 import com.example.shoppieclient.domain.main.use_cases.ReadOnBoardingUseCase
@@ -34,9 +37,7 @@ object ShoppieAppModule {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    private val client: OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor(interceptor)
-        .build()
+    private val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
     @Provides
     @Singleton
@@ -58,12 +59,8 @@ object ShoppieAppModule {
     @Provides
     @Singleton
     fun provideShoppieApi(): ShoppieApi {
-        return Retrofit.Builder()
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(Constants.BASE_URL)
-            .build()
-            .create(ShoppieApi::class.java)
+        return Retrofit.Builder().client(client).addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(Constants.BASE_URL).build().create(ShoppieApi::class.java)
     }
 
     @Provides
@@ -74,23 +71,61 @@ object ShoppieAppModule {
 
     @Provides
     @Singleton
-    fun provideValidationEmailUseCase(): ValidationEmailUseCase {
-        return ValidationEmailUseCase()
+    fun provideSignInValidationEmailUseCase(): SignInValidationEmailUseCase {
+        return SignInValidationEmailUseCase()
     }
 
     @Provides
     @Singleton
-    fun provideValidationPasswordUseCase(): ValidationPasswordUseCase {
-        return ValidationPasswordUseCase()
+    fun provideSignInValidationPasswordUseCase(): SignInValidationPasswordUseCase {
+        return SignInValidationPasswordUseCase()
     }
 
     @Provides
     @Singleton
-    fun provideValidationUseCases(
-        validationEmailUseCase: ValidationEmailUseCase,
-        validationPasswordUseCase: ValidationPasswordUseCase
+    fun provideSignInValidationUseCases(
+        signInValidationEmailUseCase: SignInValidationEmailUseCase,
+        signInValidationPasswordUseCase: SignInValidationPasswordUseCase
     ): SignInValidationUseCases = SignInValidationUseCases(
-        validationEmailUseCase, validationPasswordUseCase
+        signInValidationEmailUseCase, signInValidationPasswordUseCase
+    )
+
+    @Provides
+    @Singleton
+    fun provideSignUpValidationNameUseCase(): SignUpNameValidationUseCase {
+        return SignUpNameValidationUseCase()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSignUpValidationEmailUseCase(): SignUpValidationEmailUseCase {
+        return SignUpValidationEmailUseCase()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSignUpValidationPasswordUseCase(): SignUpValidationPasswordUseCase {
+        return SignUpValidationPasswordUseCase()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSignUpValidationConfirmPasswordUseCase(): SignUpConfirmPasswordUseCase {
+        return SignUpConfirmPasswordUseCase()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSignUpValidationUseCases(
+        signUpNameValidationUseCase: SignUpNameValidationUseCase,
+        signUpValidationEmailUseCase: SignUpValidationEmailUseCase,
+        signUpValidationPasswordUseCase: SignUpValidationPasswordUseCase,
+        signUpConfirmPasswordUseCase: SignUpConfirmPasswordUseCase
+    ): SignUpValidationUseCases = SignUpValidationUseCases(
+        signUpNameValidationUseCase,
+        signUpValidationEmailUseCase,
+        signUpValidationPasswordUseCase,
+        signUpConfirmPasswordUseCase
     )
 
 

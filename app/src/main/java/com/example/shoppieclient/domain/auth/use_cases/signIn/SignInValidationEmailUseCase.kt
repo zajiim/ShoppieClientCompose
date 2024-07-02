@@ -1,16 +1,16 @@
 package com.example.shoppieclient.domain.auth.use_cases.signIn
 
 import android.util.Patterns
-import com.example.shoppieclient.domain.auth.models.signin.SignInEmailValidationType
+import com.example.shoppieclient.domain.auth.models.signin.EmailValidationType
 
-class ValidationEmailUseCase {
-    operator fun invoke(email: String): SignInEmailValidationType {
+class SignInValidationEmailUseCase {
+    operator fun invoke(email: String): EmailValidationType {
         if (email.isEmpty()) {
-            return SignInEmailValidationType.EMPTY_EMAIL
+            return EmailValidationType.EMPTY_EMAIL
         }
         if (Patterns.EMAIL_ADDRESS.matcher(email).matches().not()) {
-            return SignInEmailValidationType.INVALID_EMAIL
+            return EmailValidationType.INVALID_EMAIL
         }
-        return SignInEmailValidationType.VALID_EMAIL
+        return EmailValidationType.VALID_EMAIL
     }
 }

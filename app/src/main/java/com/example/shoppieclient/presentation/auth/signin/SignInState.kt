@@ -1,4 +1,4 @@
-package com.example.shoppieclient.presentation.auth.login
+package com.example.shoppieclient.presentation.auth.signin
 
 data class SignInState(
     val emailInput: String = "",

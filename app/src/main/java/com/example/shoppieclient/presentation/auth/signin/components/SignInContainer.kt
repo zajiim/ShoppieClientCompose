@@ -20,7 +20,7 @@ import com.example.shoppieclient.presentation.auth.components.CustomTextField
 import com.example.shoppieclient.ui.theme.PrimaryBlue
 
 @Composable
-fun LoginContainer(
+fun SignInContainer(
     modifier: Modifier = Modifier,
     emailValue: () -> String,
     passwordValue: () -> String,

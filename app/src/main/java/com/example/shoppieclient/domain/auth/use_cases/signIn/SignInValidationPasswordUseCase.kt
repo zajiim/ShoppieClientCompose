@@ -1,16 +1,16 @@
 package com.example.shoppieclient.domain.auth.use_cases.signIn
 
-import com.example.shoppieclient.domain.auth.models.signin.SignInPasswordValidationType
+import com.example.shoppieclient.domain.auth.models.signin.PasswordValidationType
 
-class ValidationPasswordUseCase {
-    operator fun invoke(password: String): SignInPasswordValidationType {
+class SignInValidationPasswordUseCase {
+    operator fun invoke(password: String): PasswordValidationType {
 
         if (password.isEmpty()) {
-            return SignInPasswordValidationType.EMPTY_PASSWORD
+            return PasswordValidationType.EMPTY_PASSWORD
         }
         if (password.length < 8) {
-            return SignInPasswordValidationType.INVALID_PASSWORD
+            return PasswordValidationType.INVALID_PASSWORD
         }
-        return SignInPasswordValidationType.VALID_PASSWORD
+        return PasswordValidationType.VALID_PASSWORD
     }
 }

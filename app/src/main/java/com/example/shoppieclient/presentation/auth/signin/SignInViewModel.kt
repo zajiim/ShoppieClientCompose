@@ -1,4 +1,4 @@
-package com.example.shoppieclient.presentation.auth.login
+package com.example.shoppieclient.presentation.auth.signin
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shoppieclient.data.remote.api.ShoppieApi
-import com.example.shoppieclient.domain.auth.models.signin.SignInEmailValidationType
-import com.example.shoppieclient.domain.auth.models.signin.SignInPasswordValidationType
+import com.example.shoppieclient.domain.auth.models.signin.EmailValidationType
+import com.example.shoppieclient.domain.auth.models.signin.PasswordValidationType
 import com.example.shoppieclient.domain.auth.models.signin.SignInRequest
 import com.example.shoppieclient.domain.auth.use_cases.signIn.SignInValidationUseCases
 import com.example.shoppieclient.domain.main.use_cases.DataStoreUseCases
@@ -36,28 +36,28 @@ class LoginViewModel @Inject constructor(
 
     private fun checkEmailInputValidation() {
         val emailValidationResult =
-            validationUseCases.validationEmailUseCase(email = signInState.value.emailInput)
+            validationUseCases.signInValidationEmailUseCase(email = signInState.value.emailInput)
         processEmailInputValidationType(emailValidationResult)
     }
 
 
-    private fun processEmailInputValidationType(emailValidationResult: SignInEmailValidationType) {
+    private fun processEmailInputValidationType(emailValidationResult: EmailValidationType) {
         signInState.value = when (emailValidationResult) {
-            SignInEmailValidationType.EMPTY_EMAIL -> {
+            EmailValidationType.EMPTY_EMAIL -> {
                 signInState.value.copy(
                     emailErrorMsgInput = "Please enter an email",
                     isInputValid = false
                 )
             }
 
-            SignInEmailValidationType.INVALID_EMAIL -> {
+            EmailValidationType.INVALID_EMAIL -> {
                 signInState.value.copy(
                     emailErrorMsgInput = "Please enter a valid email",
                     isInputValid = false
                 )
             }
 
-            SignInEmailValidationType.VALID_EMAIL -> {
+            EmailValidationType.VALID_EMAIL -> {
                 signInState.value.copy(
                     emailErrorMsgInput = null,
                     isInputValid = true
@@ -77,27 +77,27 @@ class LoginViewModel @Inject constructor(
 
     private fun checkPasswordInputValidation() {
         val passwordValidationResult =
-            validationUseCases.validationPasswordUseCase(password = signInState.value.passwordInput)
+            validationUseCases.signInValidationPasswordUseCase(password = signInState.value.passwordInput)
         processPasswordInputValidationType(passwordValidationResult)
     }
 
-    private fun processPasswordInputValidationType(passwordValidationResult: SignInPasswordValidationType) {
+    private fun processPasswordInputValidationType(passwordValidationResult: PasswordValidationType) {
         signInState.value = when (passwordValidationResult) {
-            SignInPasswordValidationType.EMPTY_PASSWORD -> {
+            PasswordValidationType.EMPTY_PASSWORD -> {
                 signInState.value.copy(
                     passwordErrorMsgInput = "Please enter a password",
                     isInputValid = false
                 )
             }
 
-            SignInPasswordValidationType.INVALID_PASSWORD -> {
+            PasswordValidationType.INVALID_PASSWORD -> {
                 signInState.value.copy(
                     passwordErrorMsgInput = "Please enter a valid password",
                     isInputValid = false
                 )
             }
 
-            SignInPasswordValidationType.VALID_PASSWORD -> {
+            PasswordValidationType.VALID_PASSWORD -> {
                 signInState.value.copy(
                     passwordErrorMsgInput = null,
                     isInputValid = true
@@ -114,7 +114,7 @@ class LoginViewModel @Inject constructor(
     }
 
 
-    fun onLoginClick() {
+    fun onSignInClick() {
         signInState.value = signInState.value.copy(
             isLoading = true
         )

@@ -1,9 +1,8 @@
-package com.example.shoppieclient.presentation.auth.login
+package com.example.shoppieclient.presentation.auth.signin
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,16 +13,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.example.shoppieclient.R
+import com.example.shoppieclient.core.navigation.AuthScreen
 import com.example.shoppieclient.presentation.auth.components.CustomSocialMediaButton
 import com.example.shoppieclient.presentation.auth.components.CustomTextButtonQuery
 import com.example.shoppieclient.presentation.auth.components.CustomTitle
-import com.example.shoppieclient.presentation.auth.login.components.LoginContainer
+import com.example.shoppieclient.presentation.auth.signin.components.SignInContainer
 import com.example.shoppieclient.ui.theme.PrimaryBlue
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel(),
+    navController: NavHostController
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -35,14 +37,14 @@ fun LoginScreen(
             title = "Hello Again!",
             subTitle = "Welcome back you've been missed"
         )
-        LoginContainer(
+        SignInContainer(
             modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
             emailValue = { viewModel.signInState.value.emailInput },
             passwordValue = { viewModel.signInState.value.passwordInput },
             onEmailChanged = viewModel::onEmailChange,
             onPasswordChanged = viewModel::onPasswordChange,
             buttonEnabled = { viewModel.signInState.value.isInputValid },
-            onLoginClick = viewModel::onLoginClick,
+            onLoginClick = viewModel::onSignInClick,
             isPasswordVisible = { viewModel.signInState.value.isPasswordShown },
             onTrailingIconClick = viewModel::onTogglePasswordVisibility,
             onEmailErrorHint = { viewModel.signInState.value.emailErrorMsgInput },
@@ -70,6 +72,7 @@ fun LoginScreen(
             title = "Don\'t have an account?",
             clickableText = "Sign Up For Free"
         ) {
+            navController.navigate(route = AuthScreen.SignUp.route)
 
         }
 
