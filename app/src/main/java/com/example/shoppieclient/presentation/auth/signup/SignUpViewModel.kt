@@ -22,8 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val signUpValidationUseCases: SignUpValidationUseCases,
-    private val shoppieRepo: ShoppieApi
+    private val shoppieRepo: ShoppieApi,
+    private val signUpValidationUseCases: SignUpValidationUseCases
 ) : ViewModel() {
 
     var signUpState by mutableStateOf(SignUpState())
@@ -34,9 +34,10 @@ class SignUpViewModel @Inject constructor(
         signUpState = signUpState.copy(
             nameInput = newValue
         )
+        checkNameInputValidation()
     }
 
-    fun checkNameInputValidation() {
+    private fun checkNameInputValidation() {
         val nameValidationResult =
             signUpValidationUseCases.signUpNameValidationUseCase(name = signUpState.nameInput)
 
@@ -44,23 +45,22 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun processNameInputValidationType(nameValidationResult: NameValidationType) {
-        signUpState = when(nameValidationResult) {
+        signUpState = when (nameValidationResult) {
             NameValidationType.EMPTY_NAME -> {
                 signUpState.copy(
-                    nameErrorMsgInput = "Please enter a name",
-                    isInputValid = false
+                    nameErrorMsgInput = "Please enter a name", isInputValid = false
                 )
             }
+
             NameValidationType.INVALID_NAME -> {
                 signUpState.copy(
-                    nameErrorMsgInput = "Please enter a valid name",
-                    isInputValid = false
+                    nameErrorMsgInput = "Please enter a valid name", isInputValid = false
                 )
             }
+
             NameValidationType.VALID_NAME -> {
                 signUpState.copy(
-                    nameErrorMsgInput = null,
-                    isInputValid = true
+                    nameErrorMsgInput = null, isInputValid = true
                 )
             }
         }
@@ -71,9 +71,10 @@ class SignUpViewModel @Inject constructor(
         signUpState = signUpState.copy(
             emailInput = newValue
         )
+        checkEmailInputValidation()
     }
 
-    fun checkEmailInputValidation() {
+    private fun checkEmailInputValidation() {
         val emailValidationResult =
             signUpValidationUseCases.signUpValidationEmailUseCase(email = signUpState.emailInput)
 
@@ -84,22 +85,19 @@ class SignUpViewModel @Inject constructor(
         signUpState = when (emailValidationResult) {
             EmailValidationType.EMPTY_EMAIL -> {
                 signUpState.copy(
-                    emailErrorMsgInput = "Please enter an email",
-                    isInputValid = false
+                    emailErrorMsgInput = "Please enter an email", isInputValid = false
                 )
             }
 
             EmailValidationType.INVALID_EMAIL -> {
                 signUpState.copy(
-                    emailErrorMsgInput = "Please enter a valid email",
-                    isInputValid = false
+                    emailErrorMsgInput = "Please enter a valid email", isInputValid = false
                 )
             }
 
             EmailValidationType.VALID_EMAIL -> {
                 signUpState.copy(
-                    emailErrorMsgInput = null,
-                    isInputValid = true
+                    emailErrorMsgInput = null, isInputValid = true
                 )
             }
         }
@@ -109,9 +107,10 @@ class SignUpViewModel @Inject constructor(
         signUpState = signUpState.copy(
             passwordInput = newValue
         )
+        checkPasswordInputValidation()
     }
 
-    fun checkPasswordInputValidation() {
+    private fun checkPasswordInputValidation() {
         val passwordValidationResult =
             signUpValidationUseCases.signUpValidationPasswordUseCase(password = signUpState.passwordInput)
 
@@ -122,22 +121,19 @@ class SignUpViewModel @Inject constructor(
         signUpState = when (passwordValidationResult) {
             PasswordValidationType.EMPTY_PASSWORD -> {
                 signUpState.copy(
-                    passwordErrorMsgInput = "Please enter a password",
-                    isInputValid = false
+                    passwordErrorMsgInput = "Please enter a password", isInputValid = false
                 )
             }
 
             PasswordValidationType.INVALID_PASSWORD -> {
                 signUpState.copy(
-                    passwordErrorMsgInput = "Please enter a valid password",
-                    isInputValid = false
+                    passwordErrorMsgInput = "Please enter a valid password", isInputValid = false
                 )
             }
 
             PasswordValidationType.VALID_PASSWORD -> {
                 signUpState.copy(
-                    passwordErrorMsgInput = null,
-                    isInputValid = true
+                    passwordErrorMsgInput = null, isInputValid = true
                 )
             }
         }
@@ -147,36 +143,35 @@ class SignUpViewModel @Inject constructor(
         signUpState = signUpState.copy(
             confirmPasswordInput = newValue
         )
+        checkConfirmPasswordInputValidation()
     }
 
-    fun checkConfirmPasswordInputValidation() {
-        val confirmPasswordValidationResult =
-            signUpValidationUseCases.signUpConfirmPasswordUseCase(
-                password = signUpState.passwordInput,
-                confirmPassword = signUpState.confirmPasswordInput
-            )
+    private fun checkConfirmPasswordInputValidation() {
+        val confirmPasswordValidationResult = signUpValidationUseCases.signUpConfirmPasswordUseCase(
+            password = signUpState.passwordInput, confirmPassword = signUpState.confirmPasswordInput
+        )
 
         processConfirmPasswordInputValidationType(confirmPasswordValidationResult)
     }
 
     private fun processConfirmPasswordInputValidationType(confirmPasswordValidationResult: ConfirmPasswordValidationType) {
-        signUpState = when(confirmPasswordValidationResult) {
+        signUpState = when (confirmPasswordValidationResult) {
             ConfirmPasswordValidationType.EMPTY_PASSWORD -> {
                 signUpState.copy(
                     confirmPasswordErrorMsgInput = "Please confirm your password",
                     isInputValid = false
                 )
             }
+
             ConfirmPasswordValidationType.INVALID_PASSWORD -> {
                 signUpState.copy(
-                    confirmPasswordErrorMsgInput = "Passwords must be equal",
-                    isInputValid = false
+                    confirmPasswordErrorMsgInput = "Passwords must be equal", isInputValid = false
                 )
             }
+
             ConfirmPasswordValidationType.VALID_PASSWORD -> {
                 signUpState.copy(
-                    confirmPasswordErrorMsgInput = null,
-                    isInputValid = true
+                    confirmPasswordErrorMsgInput = null, isInputValid = true
                 )
             }
         }
@@ -211,15 +206,12 @@ class SignUpViewModel @Inject constructor(
                 )
 
                 signUpState.copy(
-                    isSuccessfullyLoggedIn = true,
-                    isLoading = false,
-                    navigateToLogin = true
+                    isSuccessfullyLoggedIn = true, isLoading = false, navigateToLogin = true
                 )
             } catch (e: HttpException) {
                 if (e.code() == 400) {
                     signUpState.copy(
-                        errorMsgLoginProcess = e.message(),
-                        isLoading = false
+                        errorMsgLoginProcess = e.message(), isLoading = false
                     )
                 } else {
                     Log.e(TAG, "onLoginClick: errorr >>>>>>> ${e.message()}")

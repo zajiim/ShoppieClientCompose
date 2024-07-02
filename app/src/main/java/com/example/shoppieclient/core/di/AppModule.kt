@@ -90,6 +90,7 @@ object ShoppieAppModule {
         signInValidationEmailUseCase, signInValidationPasswordUseCase
     )
 
+
     @Provides
     @Singleton
     fun provideSignUpValidationNameUseCase(): SignUpNameValidationUseCase {
@@ -127,6 +128,48 @@ object ShoppieAppModule {
         signUpValidationPasswordUseCase,
         signUpConfirmPasswordUseCase
     )
+
+
+
+
+
+//    @Provides
+//    @Singleton
+//    fun provideSignUpValidationNameUseCase(): SignUpNameValidationUseCase {
+//        return SignUpNameValidationUseCase()
+//    }
+//
+//    @Provides
+//    @Singleton
+//    fun provideSignUpValidationEmailUseCase(): SignUpValidationEmailUseCase {
+//        return SignUpValidationEmailUseCase()
+//    }
+//
+//    @Provides
+//    @Singleton
+//    fun provideSignUpValidationPasswordUseCase(): SignUpValidationPasswordUseCase {
+//        return SignUpValidationPasswordUseCase()
+//    }
+//
+//    @Provides
+//    @Singleton
+//    fun provideSignUpValidationConfirmPasswordUseCase(): SignUpConfirmPasswordUseCase {
+//        return SignUpConfirmPasswordUseCase()
+//    }
+//
+//    @Provides
+//    @Singleton
+//    fun provideSignUpValidationUseCases(
+//        signUpNameValidationUseCase: SignUpNameValidationUseCase,
+//        signUpValidationEmailUseCase: SignUpValidationEmailUseCase,
+//        signUpValidationPasswordUseCase: SignUpValidationPasswordUseCase,
+//        signUpConfirmPasswordUseCase: SignUpConfirmPasswordUseCase
+//    ): SignUpValidationUseCases = SignUpValidationUseCases(
+//        signUpNameValidationUseCase,
+//        signUpValidationEmailUseCase,
+//        signUpValidationPasswordUseCase,
+//        signUpConfirmPasswordUseCase
+//    )
 
 
 }
