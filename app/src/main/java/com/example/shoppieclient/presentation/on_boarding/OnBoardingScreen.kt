@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.shoppieclient.core.navigation.Graph
 import com.example.shoppieclient.domain.auth.models.on_boarding.OnBoardingPageModel
-import com.example.shoppieclient.presentation.on_boarding.components.CustomButton
+import com.example.shoppieclient.presentation.on_boarding.components.CustomButtonOnBoarding
 import com.example.shoppieclient.presentation.on_boarding.components.CustomPagerIndicator
 import com.example.shoppieclient.presentation.on_boarding.components.CustomTextButton
 import com.example.shoppieclient.presentation.on_boarding.components.PagerScreen
@@ -95,7 +95,7 @@ fun OnboardingScreen(
                         })
                 }
                 
-                CustomButton(text = buttonState.value[1],
+                CustomButtonOnBoarding(text = buttonState.value[1],
                     onClick = {
                         scope.launch {
                             if(pagerState.currentPage == 2) {

@@ -30,6 +30,7 @@ class SignUpViewModel @Inject constructor(
         private set
 
 
+
     fun onNameChange(newValue: String) {
         signUpState = signUpState.copy(
             nameInput = newValue

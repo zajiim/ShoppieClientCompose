@@ -7,16 +7,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.shoppieclient.ui.theme.DarkGray
-import com.example.shoppieclient.ui.theme.LightGray
 import com.example.shoppieclient.ui.theme.PrimaryBlue
 
 @Composable
-fun CustomButton(
+fun CustomButtonOnBoarding(
     text: String, onClick: () -> Unit
 ) {
     Button(

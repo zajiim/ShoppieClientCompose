@@ -10,6 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,10 +22,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.shoppieclient.R
 import com.example.shoppieclient.core.navigation.AuthScreen
+import com.example.shoppieclient.presentation.auth.components.CustomAlertBox
 import com.example.shoppieclient.presentation.auth.components.CustomSocialMediaButton
 import com.example.shoppieclient.presentation.auth.components.CustomTextButtonQuery
 import com.example.shoppieclient.presentation.auth.components.CustomTitle
 import com.example.shoppieclient.presentation.auth.signup.components.SignUpContainer
+import com.example.shoppieclient.presentation.on_boarding.components.CustomButtonOnBoarding
 import com.example.shoppieclient.ui.theme.PrimaryBlue
 
 @Composable
@@ -29,12 +35,28 @@ fun SignUpScreen(
     viewModel: SignUpViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
-    if (viewModel.signUpState.navigateToLogin) {
-        LaunchedEffect(key1 = Unit) {
-            navController.navigateUp()
+    val signUpState = viewModel.signUpState
+    var showDialog by remember {
+        mutableStateOf(false)
+    }
+
+    LaunchedEffect(key1 = signUpState.navigateToLogin) {
+        if (signUpState.navigateToLogin) {
+            showDialog = true
         }
     }
 
+    if (showDialog) {
+        CustomAlertBox(
+            message = "Your account has been successfully created, Please sign in",
+            onConfirm = {
+                navController.navigateUp()
+            },
+            onCancel = {
+                showDialog = false
+            }
+        )
+    }
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -93,8 +115,6 @@ fun SignUpScreen(
                 title = "Already have an account?",
                 clickableText = "Sign In"
             ) {
-
-//            navController.navigate(AuthScreen.Login.route)
                 navController.navigateUp()
             }
         }
