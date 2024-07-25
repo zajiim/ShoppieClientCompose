@@ -70,12 +70,8 @@ fun LoginScreen(
 
         CustomTextButtonQuery(
             title = "Don\'t have an account?",
-            clickableText = "Sign Up For Free"
-        ) {
-            navController.navigate(route = AuthScreen.SignUp.route)
-
-        }
-
-
+            clickableText = "Sign Up For Free",
+            onClick = {  navController.navigate(route = AuthScreen.SignUp.route) }
+        )
     }
 }

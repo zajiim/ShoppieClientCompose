@@ -12,7 +12,9 @@ import com.example.shoppieclient.presentation.on_boarding.OnBoardingViewModel
 import com.example.shoppieclient.presentation.on_boarding.OnboardingScreen
 
 @Composable
-fun RootNavGraph(mainActivityViewModel: MainActivityViewModel = hiltViewModel()) {
+fun RootNavGraph(
+    mainActivityViewModel: MainActivityViewModel = hiltViewModel()
+) {
 
     val navController = rememberNavController()
 
@@ -36,7 +38,6 @@ fun RootNavGraph(mainActivityViewModel: MainActivityViewModel = hiltViewModel())
         composable(route = Graph.MAIN) {
             MainScreen()
         }
-
     }
 
 }
