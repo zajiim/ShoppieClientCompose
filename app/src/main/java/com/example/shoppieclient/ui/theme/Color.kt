@@ -16,3 +16,4 @@ val DarkGray = Color(0xFF4D5053)
 
 val TitleColor = Color(0xFF1A2530)
 val SubTitleColor = Color(0xFF707B81)
+
