@@ -1,13 +1,12 @@
 package com.example.shoppieclient.core.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.shoppieclient.presentation.auth.main.MainActivityViewModel
-import com.example.shoppieclient.presentation.auth.main.MainScreen
+import com.example.shoppieclient.presentation.main.navbar.NavBarScreen
 import com.example.shoppieclient.presentation.on_boarding.OnBoardingViewModel
 import com.example.shoppieclient.presentation.on_boarding.OnboardingScreen
 
@@ -36,7 +35,7 @@ fun RootNavGraph(
         authNavGraph(navController)
 
         composable(route = Graph.MAIN) {
-            MainScreen()
+            NavBarScreen()
         }
     }
 

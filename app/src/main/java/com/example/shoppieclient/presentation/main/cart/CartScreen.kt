@@ -1,4 +1,4 @@
-package com.example.shoppieclient.presentation.home
+package com.example.shoppieclient.presentation.main.cart
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,17 +9,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun HomeScreen(
-    modifier: Modifier
+fun CartScreen(
+    modifier: Modifier = Modifier
 ) {
-    
+
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-        Text(text = "Home")
+    ) {
+        Text(text = "Cart")
     }
-    
-    
+
 }

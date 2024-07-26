@@ -1,4 +1,4 @@
-package com.example.shoppieclient.presentation.profile
+package com.example.shoppieclient.presentation.main.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,17 +9,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun ProfileScreen(
+fun HomeScreen(
     modifier: Modifier
 ) {
-
+    
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "Profile")
+        ) {
+        Text(text = "Home")
     }
-
-
+    
+    
 }

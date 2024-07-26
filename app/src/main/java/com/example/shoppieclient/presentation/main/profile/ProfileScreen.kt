@@ -1,4 +1,4 @@
-package com.example.shoppieclient.presentation.stats
+package com.example.shoppieclient.presentation.main.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun StatsScreen(
+fun ProfileScreen(
     modifier: Modifier
 ) {
 
@@ -18,7 +18,7 @@ fun StatsScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Stats")
+        Text(text = "Profile")
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.shoppieclient.presentation.home.components
+package com.example.shoppieclient.presentation.main.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,7 +33,7 @@ fun CustomNavBarItem(
 ) {
     Column(
         modifier = modifier
-            .height(120.dp)
+            .height(100.dp)
             .clickable(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }
