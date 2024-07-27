@@ -77,48 +77,6 @@ fun PopularShoes(
             }
         }
 
-//        Box(
-//            modifier = Modifier
-//                .size(220.dp)
-//                .clip(RoundedCornerShape(16.dp))
-//        ) {
-//            Column(modifier = Modifier.fillMaxSize(),
-//                verticalArrangement = Arrangement.spacedBy(4.dp)) {
-//                Image(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(140.dp),
-//                    painter = painterResource(id = R.drawable.ic_shoe),
-//                    contentDescription = "shoe",
-//                    contentScale = ContentScale.FillBounds
-//                )
-//                Text(text = "Best Seller", style = TextStyle(
-//                    fontSize = 12.sp,
-//                    fontWeight = FontWeight.Normal,
-//                    color = PrimaryBlue
-//                ))
-//                Text(text = "Nike Jordan", style = TextStyle(
-//                    fontSize = 16.sp,
-//                    fontWeight = FontWeight.Medium,
-//                    color = TitleColor
-//                ))
-//                Row(modifier = Modifier.fillMaxWidth(),
-//                    verticalAlignment = Alignment.CenterVertically,
-//                    horizontalArrangement = Arrangement.SpaceBetween) {
-//                    Text(text = "$493.00")
-//                    Box(modifier = Modifier
-//                        .fillMaxHeight()
-//                        .clip(RoundedCornerShape(topStart = 16.dp))
-//                        .background(PrimaryBlue)) {
-//                        IconButton(onClick = { /*TODO*/ }) {
-//                            Icon(imageVector = Icons.Default.Add, contentDescription = "Add to cart", tint = White)
-//                        }
-//                    }
-//                }
-//            }
-//        }
-
-
     }
 
 }

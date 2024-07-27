@@ -32,6 +32,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import com.example.shoppieclient.presentation.main.components.CustomTopAppBar
 import com.example.shoppieclient.presentation.main.home.components.CustomSuggestionChip
+import com.example.shoppieclient.presentation.main.home.components.NewArrivals
 import com.example.shoppieclient.presentation.main.home.components.PopularShoes
 import com.example.shoppieclient.ui.theme.BackGroundColor
 import com.example.shoppieclient.utils.searchKeys
@@ -113,7 +114,9 @@ fun HomeScreen(
                 }
 
             }
+
             Spacer(modifier = Modifier.height(16.dp))
+
             PopularShoes(
                 modifier = Modifier.fillMaxWidth(),
                 leadingTitle = "Popular Shoes",
@@ -122,36 +125,16 @@ fun HomeScreen(
             )
 
             Spacer(modifier = Modifier.height(16.dp))
-            PopularShoes(
+            
+
+            NewArrivals(
                 modifier = Modifier.fillMaxWidth(),
-                leadingTitle = "Popular Shoes",
+                leadingTitle = "New Arrivals",
                 trailingTitle = "See more",
                 shoes = shoesList
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
-            PopularShoes(
-                modifier = Modifier.fillMaxWidth(),
-                leadingTitle = "Popular Shoes",
-                trailingTitle = "See more",
-                shoes = shoesList
-            )
 
-            Spacer(modifier = Modifier.height(16.dp))
-            PopularShoes(
-                modifier = Modifier.fillMaxWidth(),
-                leadingTitle = "Popular Shoes",
-                trailingTitle = "See more",
-                shoes = shoesList
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-            PopularShoes(
-                modifier = Modifier.fillMaxWidth(),
-                leadingTitle = "Popular Shoes",
-                trailingTitle = "See more",
-                shoes = shoesList
-            )
             Spacer(modifier = Modifier.height(120.dp))
         }
 
