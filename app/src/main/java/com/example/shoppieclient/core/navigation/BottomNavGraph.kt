@@ -39,7 +39,12 @@ fun BottomNavGraph(
             )
         }
         composable(BottomBarScreen.Favorite.route) {
-            FavoriteScreen(modifier = modifier)
+            FavoriteScreen(
+                scrollBehavior = scrollBehavior,
+                onNavigateClick = {
+                    navController.navigateUp()
+                }
+            )
         }
         composable(BottomBarScreen.Cart.route) {
             CartScreen(modifier = modifier)
