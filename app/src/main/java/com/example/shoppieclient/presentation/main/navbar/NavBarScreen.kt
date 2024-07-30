@@ -39,7 +39,8 @@ fun NavBarScreen(
             modifier = Modifier
                 .fillMaxSize(),
             navController = navController,
-            scrollBehavior = scrollBehavior
+            scrollBehavior = scrollBehavior,
+            bottomPadding = innerPadding
         )
     }
 }

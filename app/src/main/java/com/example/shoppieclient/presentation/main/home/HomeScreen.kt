@@ -43,7 +43,8 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior,
     onSearch: (String) -> Unit,
-    onChipSelected: (String) -> Unit
+    onChipSelected: (String) -> Unit,
+    bottomPadding: PaddingValues
 ) {
     var query by remember {
         mutableStateOf("")
@@ -134,8 +135,15 @@ fun HomeScreen(
                 shoes = shoesList
             )
 
+            PopularShoes(
+                modifier = Modifier.fillMaxWidth(),
+                leadingTitle = "Trending now",
+                trailingTitle = "See more",
+                shoes = shoesList.subList(0, 2)
+            )
 
-            Spacer(modifier = Modifier.height(120.dp))
+
+            Spacer(modifier = Modifier.height(bottomPadding.calculateBottomPadding()))
         }
 
 

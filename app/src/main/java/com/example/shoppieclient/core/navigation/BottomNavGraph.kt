@@ -1,5 +1,6 @@
 package com.example.shoppieclient.core.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
@@ -21,7 +22,8 @@ import com.example.shoppieclient.presentation.main.notifications.NotificationsSc
 fun BottomNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    scrollBehavior: TopAppBarScrollBehavior
+    scrollBehavior: TopAppBarScrollBehavior,
+    bottomPadding: PaddingValues
 ) {
     NavHost(
         modifier = modifier,
@@ -35,7 +37,8 @@ fun BottomNavGraph(
                 modifier = modifier,
                 scrollBehavior = scrollBehavior,
                 onSearch = homeViewModel::searchItems,
-                onChipSelected = homeViewModel::searchItems
+                onChipSelected = homeViewModel::searchItems,
+                bottomPadding = bottomPadding
             )
         }
         composable(BottomBarScreen.Favorite.route) {
