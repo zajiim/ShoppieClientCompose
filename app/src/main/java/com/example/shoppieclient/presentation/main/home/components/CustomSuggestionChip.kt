@@ -27,7 +27,7 @@ fun CustomSuggestionChip(
 ) {
     Surface(
         onClick = onClick,
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(40.dp),
         color = if (isExpanded) PrimaryBlue else Color.White
     ) {
         Row(

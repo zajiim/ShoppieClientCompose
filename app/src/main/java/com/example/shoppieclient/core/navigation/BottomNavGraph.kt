@@ -14,6 +14,7 @@ import com.example.shoppieclient.presentation.main.navbar.BottomBarScreen
 import com.example.shoppieclient.presentation.main.home.HomeScreen
 import com.example.shoppieclient.presentation.main.profile.ProfileScreen
 import com.example.shoppieclient.presentation.main.favorite.FavoriteScreen
+import com.example.shoppieclient.presentation.main.favorite.FavoriteViewModel
 import com.example.shoppieclient.presentation.main.home.HomeViewModel
 import com.example.shoppieclient.presentation.main.notifications.NotificationsScreen
 
@@ -42,11 +43,14 @@ fun BottomNavGraph(
             )
         }
         composable(BottomBarScreen.Favorite.route) {
+            val favViewModel: FavoriteViewModel = hiltViewModel()
             FavoriteScreen(
                 scrollBehavior = scrollBehavior,
                 onNavigateClick = {
                     navController.navigateUp()
-                }
+                },
+                favShoppieItems = favViewModel.favShoppieItems,
+                onItemClick = {}
             )
         }
         composable(BottomBarScreen.Cart.route) {
