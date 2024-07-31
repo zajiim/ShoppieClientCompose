@@ -38,83 +38,95 @@ fun BottomNavBar(
     modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
-    val itemWidth = screenWidth / 5
 
-    val screens = listOf(
-        BottomBarScreen.Home,
-        BottomBarScreen.Favorite,
-        BottomBarScreen.Cart,
-        BottomBarScreen.Notification,
-        BottomBarScreen.Profile,
-    )
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    Box(modifier = modifier) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.height(20.dp))
-            Row(
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .fillMaxWidth()
-                    .bottomNavClip(56.dp, 20.dp)
-                    .background(Color.White),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                screens.forEach { item ->
-                    CustomNavBarItem(
-                        modifier = Modifier.width(itemWidth),
-                        icon = if (currentRoute == item.route) item.selectedIcon else item.unSelectedIcon,
-                        title = item.title,
-                        route = item.route,
-                        onRouteClicked = { route ->
-                            navController.navigate(route) {
-                                popUpTo(navController.graph.startDestinationId) {
-                                    saveState = true
+    val showBottomNav = listOf(
+        BottomBarScreen.Home.route,
+        BottomBarScreen.Favorite.route,
+        BottomBarScreen.Notification.route,
+        BottomBarScreen.Profile.route
+    ).contains(currentRoute)
+
+    if(showBottomNav) {
+        val configuration = LocalConfiguration.current
+        val screenWidth = configuration.screenWidthDp.dp
+        val itemWidth = screenWidth / 5
+
+        val screens = listOf(
+            BottomBarScreen.Home,
+            BottomBarScreen.Favorite,
+            BottomBarScreen.Cart,
+            BottomBarScreen.Notification,
+            BottomBarScreen.Profile,
+        )
+
+        Box(modifier = modifier) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Spacer(modifier = Modifier.height(20.dp))
+                Row(
+                    modifier = Modifier
+                        .navigationBarsPadding()
+                        .fillMaxWidth()
+                        .bottomNavClip(56.dp, 20.dp)
+                        .background(Color.White),
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    screens.forEach { item ->
+                        CustomNavBarItem(
+                            modifier = Modifier.width(itemWidth),
+                            icon = if (currentRoute == item.route) item.selectedIcon else item.unSelectedIcon,
+                            title = item.title,
+                            route = item.route,
+                            onRouteClicked = { route ->
+                                navController.navigate(route) {
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        selected = currentRoute == item.route
-                    )
+                            },
+                            selected = currentRoute == item.route
+                        )
+                    }
                 }
             }
-        }
 
-        Box(
-            modifier = Modifier
-                .size(54.dp)
-                .clip(CircleShape)
-                .background(Color.White)
-                .align(alignment = Alignment.TopCenter)
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
+            Box(
+                modifier = Modifier
+                    .size(54.dp)
+                    .clip(CircleShape)
+                    .background(Color.White)
+                    .align(alignment = Alignment.TopCenter)
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
                     ) {
-                    navController.navigate(BottomBarScreen.Cart.route) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
+                        navController.navigate(BottomBarScreen.Cart.route) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
-            contentAlignment = Alignment.Center
-        ) {
+                    },
+                contentAlignment = Alignment.Center
+            ) {
 
-            val cartIcon = if (currentRoute == BottomBarScreen.Cart.route) {
-                Icons.Filled.ShoppingCart
-            } else {
-                Icons.Outlined.ShoppingCart
+                val cartIcon = if (currentRoute == BottomBarScreen.Cart.route) {
+                    Icons.Filled.ShoppingCart
+                } else {
+                    Icons.Outlined.ShoppingCart
+                }
+                Image(
+                    modifier = Modifier.size(24.dp),
+                    imageVector = cartIcon,
+                    contentDescription = "cart"
+                )
             }
-            Image(
-                modifier = Modifier.size(24.dp),
-                imageVector = cartIcon,
-                contentDescription = "cart"
-            )
         }
     }
 }
