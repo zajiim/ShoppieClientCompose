@@ -46,14 +46,16 @@ fun PopularShoes(
     modifier: Modifier = Modifier,
     leadingTitle: String,
     trailingTitle: String,
-    shoes: List<ShoppieItem>
+    shoes: List<ShoppieItem>,
+    isLoading: Boolean
 ) {
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier = modifier
         ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -70,11 +72,24 @@ fun PopularShoes(
         }
 
         LazyRow(
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
-            items(shoes) { shoe ->
-                ShoeCard(shoe = shoe)
+
+            if (isLoading) {
+                items(5) {
+                    ShoeCard(
+                        isLoading = true
+                    )
+                }
+            } else {
+                items(shoes) { shoe ->
+                    ShoeCard(
+                        shoe = shoe,
+                        isLoading = false
+                    )
+                }
             }
         }
 

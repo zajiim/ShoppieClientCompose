@@ -40,7 +40,6 @@ fun BottomNavGraph(
                 modifier = modifier,
                 scrollBehavior = homeScrollBehavior,
                 onSearch = homeViewModel::searchItems,
-                onChipSelected = homeViewModel::searchItems,
                 bottomPadding = bottomPadding,
                 viewModel = homeViewModel
             )

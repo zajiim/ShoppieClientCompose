@@ -26,4 +26,6 @@ interface ShoppieRepo {
 
     fun getNewArrivals(token: String): Flow<Resource<List<ShoppieItem>>>
 
+    fun getNewArrival(token: String, category: String): Flow<Resource<List<ShoppieItem>>>
+
 }

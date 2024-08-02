@@ -11,6 +11,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ShoppieApi {
 
@@ -33,6 +34,12 @@ interface ShoppieApi {
     @GET("api/get-new-arrivals")
     suspend fun getNewArrivals(
         @Header("x-auth-token") token: String
+    ): ApiResponse
+
+    @GET("api/get-new-arrival/{category}")
+    suspend fun getNewArrival(
+        @Header("x-auth-token") token: String,
+        @Path("category") category: String,
     ): ApiResponse
 
 }

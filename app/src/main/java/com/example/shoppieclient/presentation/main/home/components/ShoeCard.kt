@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -36,10 +37,14 @@ import com.example.shoppieclient.ui.theme.BackGroundColor
 import com.example.shoppieclient.ui.theme.LightGray
 import com.example.shoppieclient.ui.theme.PrimaryBlue
 import com.example.shoppieclient.ui.theme.TitleColor
+import com.example.shoppieclient.utils.shimmerEffect
 import org.jetbrains.annotations.Async
 
 @Composable
-fun ShoeCard(shoe: ShoppieItem) {
+fun ShoeCard(
+    shoe: ShoppieItem ?= null,
+    isLoading: Boolean
+) {
     Box(
         modifier = Modifier
             .width(220.dp)
@@ -47,23 +52,31 @@ fun ShoeCard(shoe: ShoppieItem) {
             .clip(RoundedCornerShape(16.dp))
             .background(LightGray)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-
-            AsyncImage(
+        if (isLoading) {
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(140.dp),
-                model = shoe.images?.get(0),
-                contentDescription = shoe.name,
-                contentScale = ContentScale.FillBounds
+                    .fillMaxSize()
+                    .background(Color.Gray.copy(alpha = 0.1f))
+                    .shimmerEffect()
+            )
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+
+                AsyncImage(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(140.dp),
+                    model = shoe?.images?.get(0),
+                    contentDescription = shoe?.name,
+                    contentScale = ContentScale.FillBounds
                 )
 
                 Text(
+                    modifier = Modifier.padding(start = 8.dp),
                     text = "Best Seller",
                     style = TextStyle(
                         fontSize = 12.sp,
@@ -72,35 +85,41 @@ fun ShoeCard(shoe: ShoppieItem) {
                     )
                 )
 
-            Text(
-                text = shoe.name!!,
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = TitleColor
+                Text(
+                    modifier = Modifier.padding(start = 8.dp),
+                    text = shoe?.name ?: "",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = TitleColor
+                    )
                 )
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(text = "$${shoe.price}")
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .clip(RoundedCornerShape(topStart = 16.dp))
-                        .background(PrimaryBlue)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = "Add to cart",
-                            tint = White
-                        )
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = "$${shoe?.price}"
+                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .clip(RoundedCornerShape(topStart = 16.dp))
+                            .background(PrimaryBlue)
+                    ) {
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = "Add to cart",
+                                tint = White
+                            )
+                        }
                     }
                 }
             }
         }
+
     }
 }

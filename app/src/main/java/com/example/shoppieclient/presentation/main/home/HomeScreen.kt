@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -40,8 +42,10 @@ import com.example.shoppieclient.presentation.main.home.components.CustomSuggest
 import com.example.shoppieclient.presentation.main.home.components.NewArrivals
 import com.example.shoppieclient.presentation.main.home.components.PopularShoes
 import com.example.shoppieclient.ui.theme.BackGroundColor
+import com.example.shoppieclient.ui.theme.PrimaryBlue
 import com.example.shoppieclient.utils.Resource
 import com.example.shoppieclient.utils.searchKeys
+import com.example.shoppieclient.utils.shimmerEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,7 +53,6 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior,
     onSearch: (String) -> Unit,
-    onChipSelected: (String) -> Unit,
     bottomPadding: PaddingValues,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -58,7 +61,7 @@ fun HomeScreen(
     }
 
     var selectedChip by remember { mutableStateOf(searchKeys.keys.first()) }
-    val popularItemsState by viewModel.newArrivals.collectAsState()
+    val popularItemsState by viewModel.popularItems.collectAsState()
 
     Box(modifier = modifier
         .fillMaxSize()
@@ -97,7 +100,7 @@ fun HomeScreen(
                             isExpanded = selectedChip == brandName,
                             onClick = {
                                 selectedChip = brandName
-                                onChipSelected(brandName)
+                                viewModel.onChipSelected(brandName)
                             })
 
                     }
@@ -106,32 +109,14 @@ fun HomeScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-//                PopularShoes(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    leadingTitle = "Popular Shoes",
-//                    trailingTitle = "See more",
-//                    shoes =
-//                )
+                PopularShoes(
+                    modifier = Modifier.fillMaxWidth(),
+                    leadingTitle = "Popular Items",
+                    trailingTitle = "See more",
+                    shoes = popularItemsState.data ?: emptyList(),
+                    isLoading = popularItemsState is Resource.Loading
+                )
 
-                when (popularItemsState ) {
-                    is Resource.Loading -> {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(50.dp)
-                        )
-                    }
-                    is Resource.Success -> {
-                        val popularItems = popularItemsState.data ?: emptyList()
-                        PopularShoes(
-                            modifier = Modifier.fillMaxWidth(),
-                            leadingTitle = "Popular Items",
-                            trailingTitle = "See more",
-                            shoes = popularItems
-                        )
-                    }
-                    is Resource.Error -> {
-                        Text(text = "Error: ${popularItemsState.message}")
-                    }
-                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -180,4 +165,14 @@ fun HomeScreen(
     }
 
 
+}
+
+@Composable
+fun ShimmerPlaceholderItem() {
+    Box(
+        modifier = Modifier
+            .size(width = 200.dp, height = 220.dp) // Match the size of PopularShoes items
+            .background(PrimaryBlue.copy(alpha = 0.1f))
+            .shimmerEffect() // Apply the shimmer effect
+    )
 }

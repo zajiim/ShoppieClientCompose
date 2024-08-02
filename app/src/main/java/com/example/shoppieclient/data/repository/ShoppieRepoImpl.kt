@@ -72,5 +72,16 @@ class ShoppieRepoImpl @Inject constructor(
         }
     }
 
+    override fun getNewArrival(token: String, category: String): Flow<Resource<List<ShoppieItem>>> = flow{
+        emit(Resource.Loading(true))
+        try {
+            val response = shoppieApi.getNewArrival(token = token, category = category)
+            val shoppieItems = response.products.map { it.toShoppieItem() }
+            emit(Resource.Success(shoppieItems))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.message.toString()))
+        }
+    }
+
 
 }
