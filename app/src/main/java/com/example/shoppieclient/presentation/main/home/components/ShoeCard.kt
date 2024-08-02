@@ -29,14 +29,17 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import com.example.shoppieclient.domain.models.ShoppieItem
 import com.example.shoppieclient.presentation.main.home.ShoeItem
 import com.example.shoppieclient.ui.theme.BackGroundColor
 import com.example.shoppieclient.ui.theme.LightGray
 import com.example.shoppieclient.ui.theme.PrimaryBlue
 import com.example.shoppieclient.ui.theme.TitleColor
+import org.jetbrains.annotations.Async
 
 @Composable
-fun ShoeCard(shoe: ShoeItem) {
+fun ShoeCard(shoe: ShoppieItem) {
     Box(
         modifier = Modifier
             .width(220.dp)
@@ -45,17 +48,20 @@ fun ShoeCard(shoe: ShoeItem) {
             .background(LightGray)
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(start = 8.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 8.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Image(
+
+            AsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(140.dp),
-                painter = painterResource(id = shoe.image),
+                model = shoe.images?.get(0),
                 contentDescription = shoe.name,
                 contentScale = ContentScale.FillBounds
-            )
+                )
 
                 Text(
                     text = "Best Seller",
@@ -67,7 +73,7 @@ fun ShoeCard(shoe: ShoeItem) {
                 )
 
             Text(
-                text = shoe.name,
+                text = shoe.name!!,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,

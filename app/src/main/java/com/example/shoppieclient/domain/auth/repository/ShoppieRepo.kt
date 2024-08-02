@@ -3,6 +3,7 @@ package com.example.shoppieclient.domain.auth.repository
 import com.example.shoppieclient.domain.auth.models.signin.SignInResponse
 import com.example.shoppieclient.domain.auth.models.signin.TokenValidationResponse
 import com.example.shoppieclient.domain.auth.models.signup.SignUpResponse
+import com.example.shoppieclient.domain.models.ShoppieItem
 import com.example.shoppieclient.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -23,6 +24,6 @@ interface ShoppieRepo {
         token: String
     ): Flow<Resource<TokenValidationResponse>>
 
-
+    fun getNewArrivals(token: String): Flow<Resource<List<ShoppieItem>>>
 
 }

@@ -1,11 +1,14 @@
 package com.example.shoppieclient.data.remote.api
 
+import com.example.shoppieclient.data.remote.dto.ShoppieItemDto
+import com.example.shoppieclient.domain.auth.models.home.ApiResponse
 import com.example.shoppieclient.domain.auth.models.signin.SignInRequest
 import com.example.shoppieclient.domain.auth.models.signin.SignInResponse
 import com.example.shoppieclient.domain.auth.models.signin.TokenValidationResponse
 import com.example.shoppieclient.domain.auth.models.signup.SignUpRequest
 import com.example.shoppieclient.domain.auth.models.signup.SignUpResponse
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 
@@ -26,5 +29,10 @@ interface ShoppieApi {
     suspend fun isTokenValid(
         @Header("x-auth-token") token: String
     ): TokenValidationResponse
+
+    @GET("api/get-new-arrivals")
+    suspend fun getNewArrivals(
+        @Header("x-auth-token") token: String
+    ): ApiResponse
 
 }

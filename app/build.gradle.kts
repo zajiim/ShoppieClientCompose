@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
 }
@@ -88,6 +89,10 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
 
     //RoomDb  - implement later
+
+
+    //Kotlinx serialization
+    implementation(libs.kotlinx.serialization.json)
 
 
 

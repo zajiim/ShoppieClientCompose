@@ -2,7 +2,7 @@ package com.example.shoppieclient.core.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -11,20 +11,20 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.shoppieclient.presentation.main.cart.CartScreen
 import com.example.shoppieclient.presentation.main.cart.CartViewModel
-import com.example.shoppieclient.presentation.main.navbar.BottomBarScreen
-import com.example.shoppieclient.presentation.main.home.HomeScreen
-import com.example.shoppieclient.presentation.main.profile.ProfileScreen
 import com.example.shoppieclient.presentation.main.favorite.FavoriteScreen
 import com.example.shoppieclient.presentation.main.favorite.FavoriteViewModel
+import com.example.shoppieclient.presentation.main.home.HomeScreen
 import com.example.shoppieclient.presentation.main.home.HomeViewModel
+import com.example.shoppieclient.presentation.main.navbar.BottomBarScreen
 import com.example.shoppieclient.presentation.main.notifications.NotificationsScreen
+import com.example.shoppieclient.presentation.main.profile.ProfileScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    scrollBehavior: TopAppBarScrollBehavior,
+//    scrollBehavior: TopAppBarScrollBehavior,
     bottomPadding: PaddingValues
 ) {
     NavHost(
@@ -35,34 +35,37 @@ fun BottomNavGraph(
     ) {
         composable(BottomBarScreen.Home.route) {
             val homeViewModel: HomeViewModel = hiltViewModel()
+            val homeScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
             HomeScreen(
                 modifier = modifier,
-                scrollBehavior = scrollBehavior,
+                scrollBehavior = homeScrollBehavior,
                 onSearch = homeViewModel::searchItems,
                 onChipSelected = homeViewModel::searchItems,
-                bottomPadding = bottomPadding
+                bottomPadding = bottomPadding,
+                viewModel = homeViewModel
             )
         }
         composable(BottomBarScreen.Favorite.route) {
             val favViewModel: FavoriteViewModel = hiltViewModel()
+            val favoriteScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
             FavoriteScreen(
-                scrollBehavior = scrollBehavior,
+                scrollBehavior = favoriteScrollBehavior,
                 onNavigateClick = {
-                    navController.navigateUp()
-                },
+                navController.navigateUp()
+            },
                 favShoppieItems = favViewModel.favShoppieItems,
                 onItemClick = {}
             )
         }
         composable(BottomBarScreen.Cart.route) {
             val cartViewModel: CartViewModel = hiltViewModel()
+            val cartScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
             CartScreen(
                 modifier = modifier,
-                scrollBehavior = scrollBehavior,
-                myCartItems = cartViewModel.myCartItems,
+                scrollBehavior = cartScrollBehavior,
+                cartViewModel = cartViewModel,
                 onItemClick = {},
-                onNavigateClick = {navController.navigateUp()}
-            )
+                onNavigateClick = { navController.navigateUp() })
         }
         composable(BottomBarScreen.Notification.route) {
             NotificationsScreen(modifier = modifier)

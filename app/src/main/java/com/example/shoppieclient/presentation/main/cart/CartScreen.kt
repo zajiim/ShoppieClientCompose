@@ -1,27 +1,24 @@
 package com.example.shoppieclient.presentation.main.cart
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.shoppieclient.domain.models.ShoppieItem
 import com.example.shoppieclient.presentation.common.EmptyScreen
+import com.example.shoppieclient.presentation.main.cart.components.CustomCartCardList
 import com.example.shoppieclient.presentation.main.components.CustomNavigationTopAppBar
-import com.example.shoppieclient.presentation.main.favorite.components.FavoritesGrid
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,9 +27,15 @@ fun CartScreen(
     scrollBehavior: TopAppBarScrollBehavior,
     onNavigateClick: () -> Unit,
     onItemClick: () -> Unit,
-    myCartItems: List<ShoppieItem>
+//    myCartItems: List<ShoppieItem>
+    cartViewModel: CartViewModel
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+
+    val cartItems = cartViewModel.myCartItems
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         Column(
             modifier = Modifier.padding(horizontal = 16.dp)
         ) {
@@ -55,16 +58,22 @@ fun CartScreen(
                 }
             )
 
+            CustomCartCardList(
+                modifier = Modifier.fillMaxWidth(),
+                shoppieItems = cartItems
+            )
 
 
-            if(myCartItems.isEmpty()) {
+
+            if (cartItems.isEmpty()) {
                 EmptyScreen(
-                    modifier = Modifier.fillMaxSize().padding(16.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
                     title = "Cart is empty",
                     subtitle = "Go shopping"
                 )
             }
-
 
 
         }

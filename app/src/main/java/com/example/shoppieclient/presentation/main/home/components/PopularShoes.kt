@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.shoppieclient.R
+import com.example.shoppieclient.domain.models.ShoppieItem
 import com.example.shoppieclient.presentation.main.home.ShoeItem
 import com.example.shoppieclient.ui.theme.PrimaryBlue
 import com.example.shoppieclient.ui.theme.TitleColor
@@ -45,7 +46,7 @@ fun PopularShoes(
     modifier: Modifier = Modifier,
     leadingTitle: String,
     trailingTitle: String,
-    shoes: List<ShoeItem>
+    shoes: List<ShoppieItem>
 ) {
     Column(
         modifier = modifier,

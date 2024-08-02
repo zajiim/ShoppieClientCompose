@@ -13,6 +13,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -26,20 +27,21 @@ fun NavBarScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+//    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
         bottomBar = {
             BottomNavBar(
                 navController = navController
             )
         },
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+//        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier = Modifier
     ) { innerPadding ->
         BottomNavGraph(
             modifier = Modifier
                 .fillMaxSize(),
             navController = navController,
-            scrollBehavior = scrollBehavior,
+//            scrollBehavior = scrollBehavior,
             bottomPadding = innerPadding
         )
     }

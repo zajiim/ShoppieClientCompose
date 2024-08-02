@@ -33,7 +33,7 @@ fun FavShoppieItem(
     onToggleFavStatus: () -> Unit
 ) {
     val shoppieImage =
-        ImageRequest.Builder(LocalContext.current).data(shoppieItem?.imageUrl).crossfade(true)
+        ImageRequest.Builder(LocalContext.current).data(shoppieItem?.images?.get(0)).crossfade(true)
             .build()
 
     Card(
@@ -50,7 +50,7 @@ fun FavShoppieItem(
                 AsyncImage(
                     modifier = Modifier.fillMaxWidth().height(160.dp),
                     model = shoppieImage,
-                    contentDescription = shoppieItem?.productName,
+                    contentDescription = shoppieItem?.name,
                     contentScale = ContentScale.FillBounds,
                 )
 
@@ -66,7 +66,7 @@ fun FavShoppieItem(
 
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
-                    text = shoppieItem?.productName ?: "",
+                    text = shoppieItem?.name ?: "",
                     style = TextStyle(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,

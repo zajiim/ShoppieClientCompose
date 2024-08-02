@@ -1,5 +1,6 @@
 package com.example.shoppieclient.data.repository
 
+import com.example.shoppieclient.data.mapper.toShoppieItem
 import com.example.shoppieclient.data.remote.api.ShoppieApi
 import com.example.shoppieclient.domain.auth.models.signin.SignInRequest
 import com.example.shoppieclient.domain.auth.models.signin.SignInResponse
@@ -7,6 +8,7 @@ import com.example.shoppieclient.domain.auth.models.signin.TokenValidationRespon
 import com.example.shoppieclient.domain.auth.models.signup.SignUpRequest
 import com.example.shoppieclient.domain.auth.models.signup.SignUpResponse
 import com.example.shoppieclient.domain.auth.repository.ShoppieRepo
+import com.example.shoppieclient.domain.models.ShoppieItem
 import com.example.shoppieclient.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -58,4 +60,17 @@ class ShoppieRepoImpl @Inject constructor(
             emit(Resource.Error(message = e.message.toString()))
         }
     }
+
+    override fun getNewArrivals(token: String): Flow<Resource<List<ShoppieItem>>> = flow {
+        emit(Resource.Loading(true))
+        try {
+            val response = shoppieApi.getNewArrivals(token = token)
+            val shoppieItems = response.products.map { it.toShoppieItem() }
+            emit(Resource.Success(shoppieItems))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.message.toString()))
+        }
+    }
+
+
 }
