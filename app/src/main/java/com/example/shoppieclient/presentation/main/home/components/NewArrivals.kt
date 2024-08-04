@@ -43,10 +43,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.shoppieclient.R
+import com.example.shoppieclient.domain.models.ShoppieItem
 import com.example.shoppieclient.presentation.main.home.ShoeItem
 import com.example.shoppieclient.ui.theme.LightGray
 import com.example.shoppieclient.ui.theme.PrimaryBlue
 import com.example.shoppieclient.ui.theme.TitleColor
+import com.example.shoppieclient.utils.shimmerEffect
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -59,7 +61,8 @@ fun NewArrivals(
     modifier: Modifier = Modifier,
     leadingTitle: String,
     trailingTitle: String,
-    shoes: List<ShoeItem>
+    shoes: List<ShoppieItem>,
+    isLoading: Boolean
 ) {
     val pagerState = rememberPagerState(pageCount = {shoes.size})
     val scope = rememberCoroutineScope()
@@ -105,9 +108,18 @@ fun NewArrivals(
                 .fillMaxSize()
                 .height(120.dp)
         ) { pageIndex ->
-            val shoe = shoes[pageIndex]
 
-            Row(
+
+            if(isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Gray.copy(alpha = 0.1f))
+                        .shimmerEffect()
+                )
+            } else {
+                val shoe = shoes[pageIndex]
+                Row(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 16.dp)
@@ -131,7 +143,7 @@ fun NewArrivals(
                             )
                         )
                         Text(
-                            text = shoe.name,
+                            text = shoe?.name ?: "",
                             style = TextStyle(
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Medium,
@@ -145,11 +157,12 @@ fun NewArrivals(
                             .fillMaxHeight()
                             .width(140.dp)
                             .padding(16.dp),
-                        model = shoe.image,
+                        model = shoe.images?.get(0),
                         contentDescription = shoe.name,
                         contentScale = ContentScale.Fit
                     )
                 }
+            }
         }
         Row(
             Modifier

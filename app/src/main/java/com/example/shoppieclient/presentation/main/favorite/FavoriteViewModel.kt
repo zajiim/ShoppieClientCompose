@@ -19,6 +19,7 @@ class FavoriteViewModel @Inject constructor(
             images = listOf("https://m.media-amazon.com/images/I/614aiM56siL._SL1500_.jpg"),
             category = "BEST SELLING",
             name = "Nike",
+            brand = "Nike",
             price = 34,
             description = "",
             quantity = 5
@@ -29,6 +30,7 @@ class FavoriteViewModel @Inject constructor(
             images = listOf("https://m.media-amazon.com/images/I/614aiM56siL._SL1500_.jpg"),
             category = "BEST SELLING",
             name = "Nike",
+            brand = "Nike",
             price = 34,
             description = "",
             quantity = 5

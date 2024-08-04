@@ -7,6 +7,7 @@ fun ShoppieItemDto.toShoppieItem(): ShoppieItem {
     return ShoppieItem(
         id = id,
         name = name,
+        brand = brand,
         description = description,
         images = images,
         category = category,

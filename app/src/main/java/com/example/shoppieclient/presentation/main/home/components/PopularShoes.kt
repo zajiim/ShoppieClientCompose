@@ -78,7 +78,7 @@ fun PopularShoes(
         ) {
 
             if (isLoading) {
-                items(5) {
+                items(2) {
                     ShoeCard(
                         isLoading = true
                     )

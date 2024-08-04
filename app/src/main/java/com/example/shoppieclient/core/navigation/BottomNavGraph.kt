@@ -39,7 +39,6 @@ fun BottomNavGraph(
             HomeScreen(
                 modifier = modifier,
                 scrollBehavior = homeScrollBehavior,
-                onSearch = homeViewModel::searchItems,
                 bottomPadding = bottomPadding,
                 viewModel = homeViewModel
             )

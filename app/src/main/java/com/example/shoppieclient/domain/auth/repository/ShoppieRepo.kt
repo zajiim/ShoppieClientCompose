@@ -24,8 +24,10 @@ interface ShoppieRepo {
         token: String
     ): Flow<Resource<TokenValidationResponse>>
 
-    fun getNewArrivals(token: String): Flow<Resource<List<ShoppieItem>>>
+    fun getPopularBrands(token: String): Flow<Resource<List<ShoppieItem>>>
 
-    fun getNewArrival(token: String, category: String): Flow<Resource<List<ShoppieItem>>>
+    fun getPopularBrand(token: String, category: String): Flow<Resource<List<ShoppieItem>>>
+
+    fun getNewArrivals(token: String): Flow<Resource<List<ShoppieItem>>>
 
 }

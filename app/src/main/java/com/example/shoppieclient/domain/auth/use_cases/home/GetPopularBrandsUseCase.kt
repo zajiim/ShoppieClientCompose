@@ -6,10 +6,10 @@ import com.example.shoppieclient.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetNewArrivalsUseCase @Inject constructor(
+class GetPopularBrandsUseCase @Inject constructor(
     private val shoppieRepo: ShoppieRepo
 ) {
     operator fun invoke(token: String): Flow<Resource<List<ShoppieItem>>> {
-        return shoppieRepo.getNewArrivals(token)
+        return shoppieRepo.getPopularBrands(token)
     }
 }

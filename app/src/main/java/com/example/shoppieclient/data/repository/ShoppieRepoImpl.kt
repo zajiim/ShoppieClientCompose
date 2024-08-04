@@ -61,10 +61,10 @@ class ShoppieRepoImpl @Inject constructor(
         }
     }
 
-    override fun getNewArrivals(token: String): Flow<Resource<List<ShoppieItem>>> = flow {
+    override fun getPopularBrands(token: String): Flow<Resource<List<ShoppieItem>>> = flow {
         emit(Resource.Loading(true))
         try {
-            val response = shoppieApi.getNewArrivals(token = token)
+            val response = shoppieApi.getPopularBrands(token = token)
             val shoppieItems = response.products.map { it.toShoppieItem() }
             emit(Resource.Success(shoppieItems))
         } catch (e: Exception) {
@@ -72,10 +72,21 @@ class ShoppieRepoImpl @Inject constructor(
         }
     }
 
-    override fun getNewArrival(token: String, category: String): Flow<Resource<List<ShoppieItem>>> = flow{
+    override fun getPopularBrand(token: String, category: String): Flow<Resource<List<ShoppieItem>>> = flow{
         emit(Resource.Loading(true))
         try {
-            val response = shoppieApi.getNewArrival(token = token, category = category)
+            val response = shoppieApi.getPopularBrand(token = token, category = category)
+            val shoppieItems = response.products.map { it.toShoppieItem() }
+            emit(Resource.Success(shoppieItems))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.message.toString()))
+        }
+    }
+
+    override fun getNewArrivals(token: String): Flow<Resource<List<ShoppieItem>>> = flow {
+        emit(Resource.Loading(true))
+        try {
+            val response = shoppieApi.getNewArrivals(token = token)
             val shoppieItems = response.products.map { it.toShoppieItem() }
             emit(Resource.Success(shoppieItems))
         } catch (e: Exception) {

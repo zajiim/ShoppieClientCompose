@@ -16,6 +16,8 @@ data class ShoppieItemDto(
     val images: List<String>,
     @SerialName("name")
     val name: String,
+    @SerialName("brand")
+    val brand: String,
     @SerialName("price")
     val price: Int,
     @SerialName("quantity")

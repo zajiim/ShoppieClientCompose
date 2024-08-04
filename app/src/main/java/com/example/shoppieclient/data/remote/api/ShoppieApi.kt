@@ -1,6 +1,5 @@
 package com.example.shoppieclient.data.remote.api
 
-import com.example.shoppieclient.data.remote.dto.ShoppieItemDto
 import com.example.shoppieclient.domain.auth.models.home.ApiResponse
 import com.example.shoppieclient.domain.auth.models.signin.SignInRequest
 import com.example.shoppieclient.domain.auth.models.signin.SignInResponse
@@ -31,15 +30,21 @@ interface ShoppieApi {
         @Header("x-auth-token") token: String
     ): TokenValidationResponse
 
-    @GET("api/get-new-arrivals")
+    @GET("api/popularBrands")
+    suspend fun getPopularBrands(
+        @Header("x-auth-token") token: String
+    ): ApiResponse
+
+    @GET("api/popularBrand/{brand}")
+    suspend fun getPopularBrand(
+        @Header("x-auth-token") token: String,
+        @Path("brand") category: String,
+    ): ApiResponse
+
+    @GET("api/newArrivals")
     suspend fun getNewArrivals(
         @Header("x-auth-token") token: String
     ): ApiResponse
 
-    @GET("api/get-new-arrival/{category}")
-    suspend fun getNewArrival(
-        @Header("x-auth-token") token: String,
-        @Path("category") category: String,
-    ): ApiResponse
 
 }

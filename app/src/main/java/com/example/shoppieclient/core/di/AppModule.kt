@@ -5,6 +5,8 @@ import com.example.shoppieclient.data.datamanager.LocalUserManagerImpl
 import com.example.shoppieclient.data.remote.api.ShoppieApi
 import com.example.shoppieclient.data.repository.ShoppieRepoImpl
 import com.example.shoppieclient.domain.auth.repository.ShoppieRepo
+import com.example.shoppieclient.domain.auth.use_cases.home.GetNewArrivalsUseCase
+import com.example.shoppieclient.domain.auth.use_cases.home.GetPopularBrandsIndividualUseCase
 import com.example.shoppieclient.domain.auth.use_cases.signIn.SignInValidationUseCases
 import com.example.shoppieclient.domain.auth.use_cases.signIn.SignInValidationEmailUseCase
 import com.example.shoppieclient.domain.auth.use_cases.signIn.SignInValidationPasswordUseCase
@@ -128,6 +130,18 @@ object ShoppieAppModule {
         signUpValidationPasswordUseCase,
         signUpConfirmPasswordUseCase
     )
+
+    @Provides
+    @Singleton
+    fun provideGetPopularBrandsIndividualUseCase(repo: ShoppieRepo): GetPopularBrandsIndividualUseCase {
+        return GetPopularBrandsIndividualUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetNewArrivalsUseCase(repo: ShoppieRepo): GetNewArrivalsUseCase {
+        return GetNewArrivalsUseCase(repo)
+    }
 
 
 }

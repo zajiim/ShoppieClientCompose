@@ -52,7 +52,6 @@ import com.example.shoppieclient.utils.shimmerEffect
 fun HomeScreen(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior,
-    onSearch: (String) -> Unit,
     bottomPadding: PaddingValues,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -62,6 +61,7 @@ fun HomeScreen(
 
     var selectedChip by remember { mutableStateOf(searchKeys.keys.first()) }
     val popularItemsState by viewModel.popularItems.collectAsState()
+    val newArrivalsItemsState by viewModel.newArrivals.collectAsState()
 
     Box(modifier = modifier
         .fillMaxSize()
@@ -83,7 +83,7 @@ fun HomeScreen(
                             imageVector = Icons.Default.Search, contentDescription = "search"
                         )
                     },
-                    onSearch = { onSearch(query) },
+                    onSearch =  viewModel::searchItems,
                     active = false,
                     onActiveChange = {},
                     content = {})
@@ -125,7 +125,8 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxWidth(),
                     leadingTitle = "New Arrivals",
                     trailingTitle = "See more",
-                    shoes = shoesList
+                    shoes = newArrivalsItemsState.data ?: emptyList(),
+                    isLoading = newArrivalsItemsState is Resource.Loading
                 )
 
 //                PopularShoes(
@@ -165,14 +166,4 @@ fun HomeScreen(
     }
 
 
-}
-
-@Composable
-fun ShimmerPlaceholderItem() {
-    Box(
-        modifier = Modifier
-            .size(width = 200.dp, height = 220.dp) // Match the size of PopularShoes items
-            .background(PrimaryBlue.copy(alpha = 0.1f))
-            .shimmerEffect() // Apply the shimmer effect
-    )
 }
