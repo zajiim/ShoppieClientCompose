@@ -94,5 +94,38 @@ class ShoppieRepoImpl @Inject constructor(
         }
     }
 
+    override fun getTrendingShoes(token: String): Flow<Resource<List<ShoppieItem>>> = flow {
+        emit(Resource.Loading(true))
+        try {
+            val response = shoppieApi.getTrendingShoes(token = token)
+            val shoppieItems = response.products.map { it.toShoppieItem() }
+            emit(Resource.Success(shoppieItems))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.message.toString()))
+        }
+    }
+
+    override fun getTopRated(token: String): Flow<Resource<List<ShoppieItem>>> = flow {
+        emit(Resource.Loading(true))
+        try {
+            val response = shoppieApi.getTopRated(token = token)
+            val shoppieItems = response.products.map { it.toShoppieItem() }
+            emit(Resource.Success(shoppieItems))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.message.toString()))
+        }
+    }
+
+    override fun suggestedForYou(token: String): Flow<Resource<List<ShoppieItem>>> = flow {
+        emit(Resource.Loading(true))
+        try {
+            val response = shoppieApi.suggestedForYou(token = token)
+            val shoppieItems = response.products.map { it.toShoppieItem() }
+            emit(Resource.Success(shoppieItems))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.message.toString()))
+        }
+    }
+
 
 }

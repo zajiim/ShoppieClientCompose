@@ -9,9 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -19,7 +16,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,10 +38,8 @@ import com.example.shoppieclient.presentation.main.home.components.CustomSuggest
 import com.example.shoppieclient.presentation.main.home.components.NewArrivals
 import com.example.shoppieclient.presentation.main.home.components.PopularShoes
 import com.example.shoppieclient.ui.theme.BackGroundColor
-import com.example.shoppieclient.ui.theme.PrimaryBlue
 import com.example.shoppieclient.utils.Resource
 import com.example.shoppieclient.utils.searchKeys
-import com.example.shoppieclient.utils.shimmerEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,6 +56,9 @@ fun HomeScreen(
     var selectedChip by remember { mutableStateOf(searchKeys.keys.first()) }
     val popularItemsState by viewModel.popularItems.collectAsState()
     val newArrivalsItemsState by viewModel.newArrivals.collectAsState()
+    val trendingItemsState by viewModel.trendingShoes.collectAsState()
+    val topRatedState by viewModel.topRated.collectAsState()
+    val suggestedForYouState by viewModel.suggestedForYou.collectAsState()
 
     Box(modifier = modifier
         .fillMaxSize()
@@ -129,12 +126,29 @@ fun HomeScreen(
                     isLoading = newArrivalsItemsState is Resource.Loading
                 )
 
-//                PopularShoes(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    leadingTitle = "Trending now",
-//                    trailingTitle = "See more",
-//                    shoes = popularItemsList
-//                )
+                PopularShoes(
+                    modifier = Modifier.fillMaxWidth(),
+                    leadingTitle = "Trending Shoes",
+                    trailingTitle = "See more",
+                    shoes = trendingItemsState.data ?: emptyList(),
+                    isLoading = trendingItemsState is Resource.Loading
+                )
+
+                PopularShoes(
+                    modifier = Modifier.fillMaxWidth(),
+                    leadingTitle = "Top Rated",
+                    trailingTitle = "See more",
+                    shoes = topRatedState.data ?: emptyList(),
+                    isLoading = topRatedState is Resource.Loading
+                )
+
+                PopularShoes(
+                    modifier = Modifier.fillMaxWidth(),
+                    leadingTitle = "Suggested for you",
+                    trailingTitle = "See more",
+                    shoes = suggestedForYouState.data ?: emptyList(),
+                    isLoading = suggestedForYouState is Resource.Loading
+                )
 
 
                 Spacer(modifier = Modifier.height(bottomPadding.calculateBottomPadding()))

@@ -46,5 +46,20 @@ interface ShoppieApi {
         @Header("x-auth-token") token: String
     ): ApiResponse
 
+    @GET("api/getTrendingShoes")
+    suspend fun getTrendingShoes(
+        @Header("x-auth-token") token: String
+    ): ApiResponse
+
+    @GET("api/getTopRated")
+    suspend fun getTopRated(
+        @Header("x-auth-token") token: String
+    ): ApiResponse
+
+    @GET("api/suggestedForYou")
+    suspend fun suggestedForYou(
+        @Header("x-auth-token") token: String
+    ): ApiResponse
+
 
 }

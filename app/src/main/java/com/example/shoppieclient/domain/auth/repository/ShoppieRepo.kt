@@ -30,4 +30,10 @@ interface ShoppieRepo {
 
     fun getNewArrivals(token: String): Flow<Resource<List<ShoppieItem>>>
 
+    fun getTrendingShoes(token: String): Flow<Resource<List<ShoppieItem>>>
+
+    fun getTopRated(token: String): Flow<Resource<List<ShoppieItem>>>
+
+    fun suggestedForYou(token: String): Flow<Resource<List<ShoppieItem>>>
+
 }

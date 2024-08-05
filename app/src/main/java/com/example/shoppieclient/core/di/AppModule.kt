@@ -7,6 +7,11 @@ import com.example.shoppieclient.data.repository.ShoppieRepoImpl
 import com.example.shoppieclient.domain.auth.repository.ShoppieRepo
 import com.example.shoppieclient.domain.auth.use_cases.home.GetNewArrivalsUseCase
 import com.example.shoppieclient.domain.auth.use_cases.home.GetPopularBrandsIndividualUseCase
+import com.example.shoppieclient.domain.auth.use_cases.home.GetPopularBrandsUseCase
+import com.example.shoppieclient.domain.auth.use_cases.home.GetSuggestedUseCase
+import com.example.shoppieclient.domain.auth.use_cases.home.GetTopRatedUseCase
+import com.example.shoppieclient.domain.auth.use_cases.home.GetTrendingShoesUseCase
+import com.example.shoppieclient.domain.auth.use_cases.home.HomeApiUseCases
 import com.example.shoppieclient.domain.auth.use_cases.signIn.SignInValidationUseCases
 import com.example.shoppieclient.domain.auth.use_cases.signIn.SignInValidationEmailUseCase
 import com.example.shoppieclient.domain.auth.use_cases.signIn.SignInValidationPasswordUseCase
@@ -141,6 +146,45 @@ object ShoppieAppModule {
     @Singleton
     fun provideGetNewArrivalsUseCase(repo: ShoppieRepo): GetNewArrivalsUseCase {
         return GetNewArrivalsUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetTrendingShoesUseCase(repo: ShoppieRepo): GetTrendingShoesUseCase {
+        return GetTrendingShoesUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetTopRatedShoesUseCase(repo: ShoppieRepo): GetTopRatedUseCase {
+        return GetTopRatedUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetSuggestedUseCase(repo: ShoppieRepo): GetSuggestedUseCase {
+        return GetSuggestedUseCase(repo)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideHomeApiUseCases(
+        getPopularBrandsUseCase: GetPopularBrandsUseCase,
+        getPopularBrandsIndividualUseCase: GetPopularBrandsIndividualUseCase,
+        getNewArrivalsUseCase: GetNewArrivalsUseCase,
+        getTrendingShoesUseCase: GetTrendingShoesUseCase,
+        getTopRatedUseCase: GetTopRatedUseCase,
+        getSuggestedUseCase: GetSuggestedUseCase
+    ): HomeApiUseCases {
+        return HomeApiUseCases(
+            getPopularBrandsUseCase,
+            getPopularBrandsIndividualUseCase,
+            getNewArrivalsUseCase,
+            getTrendingShoesUseCase,
+            getTopRatedUseCase,
+            getSuggestedUseCase
+        )
     }
 
 
