@@ -1,5 +1,6 @@
 package com.example.shoppieclient.presentation.main.details
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shoppieclient.domain.auth.use_cases.details.GetProductDetailsUseCase
@@ -17,16 +18,20 @@ import javax.inject.Inject
 class DetailsViewModel @Inject constructor(
     private val getProductDetailsUseCase: GetProductDetailsUseCase,
     private val dataStoreUseCase: DataStoreUseCases,
+    savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
     private val _productDetails = MutableStateFlow<Resource<ShoppieItem>>(Resource.Loading(true))
     val productDetails = _productDetails.asStateFlow()
 
+    init {
+        val productId = savedStateHandle.get<String>("itemId")
+        productId?.let { fetchProductDetails(it) }
+    }
 
 
 
-
-    fun fetchProductDetails(id: String) = viewModelScope.launch {
+    private fun fetchProductDetails(id: String) = viewModelScope.launch {
         val token = dataStoreUseCase.readTokenUseCase().firstOrNull()
         if (token != null) {
             getProductDetails(token, id)

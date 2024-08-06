@@ -148,7 +148,7 @@ fun NewArrivals(
                             )
                         )
                         Text(
-                            text = shoe?.name ?: "",
+                            text = shoe.name ?: "",
                             style = TextStyle(
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Medium,

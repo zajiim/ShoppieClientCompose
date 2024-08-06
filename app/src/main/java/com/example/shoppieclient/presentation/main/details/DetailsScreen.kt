@@ -1,7 +1,8 @@
 package com.example.shoppieclient.presentation.main.details
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,12 +10,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,33 +31,48 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.shoppieclient.R
 import com.example.shoppieclient.presentation.main.components.CustomNavigationTopAppBar
+import com.example.shoppieclient.presentation.main.details.components.AddCartBottomSection
+import com.example.shoppieclient.presentation.main.details.components.ProductImage
+import com.example.shoppieclient.presentation.main.details.components.ThumbnailImage
 import com.example.shoppieclient.ui.theme.BackGroundColor
-import com.example.shoppieclient.utils.Resource
+import com.example.shoppieclient.ui.theme.LightGray
+import com.example.shoppieclient.ui.theme.PrimaryBlue
+import com.example.shoppieclient.ui.theme.SubTitleColor
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun DetailsScreen(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
     onNavigateClick: () -> Unit,
-    productId: String,
     viewModel: DetailsViewModel
 ) {
     val productDetailsState by viewModel.productDetails.collectAsState()
+    val pagerState = rememberPagerState(pageCount = { productDetailsState.data?.images?.size ?: 0 })
+    var selectedImageIndex by remember { mutableIntStateOf(0) }
+    val scope = rememberCoroutineScope()
 
-    LaunchedEffect(productId) {
-        viewModel.fetchProductDetails(productId)
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }.collect{ page ->
+            selectedImageIndex = page
+        }
     }
 
     Box(
@@ -60,40 +81,88 @@ fun DetailsScreen(
             .background(BackGroundColor)
             .nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
-        when (val details = productDetailsState) {
-            is Resource.Loading -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
-            is Resource.Success -> {
-                val product = details.data
-                Column(
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            productDetailsState.data?.images?.let { images ->
+                HorizontalPager(
+                    state = pagerState,
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 16.dp)
-                        .verticalScroll(rememberScrollState())
-                ) {
-                    AsyncImage(
-                        model = product?.images?.firstOrNull(),
-                        contentDescription = product?.name,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(400.dp),
-                        contentScale = ContentScale.Fit
+                        .fillMaxWidth()
+                        .height(300.dp)
+                ) { page ->
+                    ProductImage(
+                        modifier = Modifier,
+                        imageUrl = images[page]
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = product?.name ?: "", )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = "Price: $${product?.price}")
                 }
             }
-            is Resource.Error -> {
-                Text(
-                    text = "Error: ${details.message}",
-                    modifier = Modifier.align(Alignment.Center),
-                    color = Color.Red
-                )
+
+            productDetailsState.data?.category?.let { Text(text = it, style = TextStyle(
+                color = PrimaryBlue,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium
+            ),
+                modifier = Modifier.padding(horizontal = 16.dp)
+            ) }
+
+
+            productDetailsState.data?.name?.let { Text(text = it, style = TextStyle(
+                color = Color.Black,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            ),
+                modifier = Modifier.padding(horizontal = 16.dp)) }
+
+            productDetailsState.data?.price?.let { Text(text = "₹ $it", style = TextStyle(
+                color = Color.Black,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold
+            ),
+                modifier = Modifier.padding(horizontal = 16.dp)) }
+
+            productDetailsState.data?.description?.let { Text(text = it, style = TextStyle(
+                color = SubTitleColor,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            ),
+                modifier = Modifier.padding(horizontal = 16.dp)) }
+            
+
+            Text(text = "Gallery", style = TextStyle(
+                color = Color.Black,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold
+            ),
+                modifier = Modifier.padding(horizontal = 16.dp))
+
+            LazyRow(
+                modifier = Modifier
+                    .height(80.dp)
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp, horizontal = 16.dp)) {
+                productDetailsState.data?.images?.let { images ->
+                    itemsIndexed(images) { index, item ->
+                        ThumbnailImage(
+                            imageUrl = item,
+                            isSelected = selectedImageIndex == index,
+                            onClick = {
+                                selectedImageIndex = index
+                                scope.launch {
+                                    pagerState.animateScrollToPage(index)
+                                }
+                            }
+                        )
+                    }
+                }
             }
+            
+            Spacer(modifier = Modifier.height(140.dp))
         }
+
 
         CustomNavigationTopAppBar(
             title = "Details",
@@ -106,7 +175,7 @@ fun DetailsScreen(
                 }
             },
             actions = {
-                IconButton(onClick = {  }) {
+                IconButton(onClick = { }) {
                     Icon(
                         imageVector = Icons.Outlined.FavoriteBorder,
                         contentDescription = "Favorite icon"
@@ -115,6 +184,14 @@ fun DetailsScreen(
             },
             scrollBehavior = scrollBehavior
         )
+
+        AddCartBottomSection(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .wrapContentSize(Alignment.BottomCenter),
+            price = productDetailsState.data?.price.toString()
+        )
+
     }
 }
 

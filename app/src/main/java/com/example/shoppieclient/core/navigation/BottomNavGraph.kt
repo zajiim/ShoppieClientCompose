@@ -83,12 +83,10 @@ fun BottomNavGraph(
         composable(
             route = Graph.DETAILS,
             arguments = listOf(navArgument("itemId") { NavType.StringType })
-        ) { navBackStackEntry ->
-            val itemId = navBackStackEntry.arguments?.getString("itemId") ?: ""
+        ) {
             val detailsViewModel: DetailsViewModel = hiltViewModel()
             DetailsScreen(
                 onNavigateClick = { navController.navigateUp() },
-                productId =itemId,
                 viewModel = detailsViewModel
             )
         }
