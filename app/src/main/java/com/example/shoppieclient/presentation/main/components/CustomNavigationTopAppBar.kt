@@ -17,22 +17,19 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun CustomNavigationTopAppBar(
     modifier: Modifier = Modifier,
-    scrollBehavior: TopAppBarScrollBehavior,
+    scrollBehavior: TopAppBarScrollBehavior? = null,
     title: String,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable (RowScope.() -> Unit) = {}
 ) {
     CenterAlignedTopAppBar(
-        modifier = modifier,
-        scrollBehavior = scrollBehavior,
-        title = {
+        modifier = modifier, scrollBehavior = scrollBehavior, title = {
             Text(
                 text = title, style = TextStyle(
                     fontSize = 24.sp, fontWeight = FontWeight.Bold
                 )
             )
-        }, actions = actions,
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+        }, actions = actions, colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             scrolledContainerColor = MaterialTheme.colorScheme.background
         ), navigationIcon = navigationIcon
     )

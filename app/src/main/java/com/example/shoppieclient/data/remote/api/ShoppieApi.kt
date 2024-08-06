@@ -1,6 +1,7 @@
 package com.example.shoppieclient.data.remote.api
 
 import com.example.shoppieclient.domain.auth.models.home.ApiResponse
+import com.example.shoppieclient.domain.auth.models.home.ProductDetailsResponse
 import com.example.shoppieclient.domain.auth.models.signin.SignInRequest
 import com.example.shoppieclient.domain.auth.models.signin.SignInResponse
 import com.example.shoppieclient.domain.auth.models.signin.TokenValidationResponse
@@ -60,6 +61,12 @@ interface ShoppieApi {
     suspend fun suggestedForYou(
         @Header("x-auth-token") token: String
     ): ApiResponse
+
+    @GET("api/get-product/{id}")
+    suspend fun getProductDetail(
+        @Header("x-auth-token") token: String,
+        @Path("id") id: String
+    ): ProductDetailsResponse
 
 
 }

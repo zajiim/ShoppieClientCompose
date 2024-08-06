@@ -27,7 +27,6 @@ fun CartScreen(
     scrollBehavior: TopAppBarScrollBehavior,
     onNavigateClick: () -> Unit,
     onItemClick: () -> Unit,
-//    myCartItems: List<ShoppieItem>
     cartViewModel: CartViewModel
 ) {
 

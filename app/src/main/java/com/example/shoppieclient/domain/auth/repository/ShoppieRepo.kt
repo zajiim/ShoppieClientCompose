@@ -36,4 +36,6 @@ interface ShoppieRepo {
 
     fun suggestedForYou(token: String): Flow<Resource<List<ShoppieItem>>>
 
+    fun getProductDetail(token: String, id: String): Flow<Resource<ShoppieItem>>
+
 }

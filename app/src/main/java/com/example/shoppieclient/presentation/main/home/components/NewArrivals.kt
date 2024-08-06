@@ -1,5 +1,6 @@
 package com.example.shoppieclient.presentation.main.home.components
 
+import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -68,15 +69,19 @@ fun NewArrivals(
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(pagerState) {
-        scope.launch {
-            while (isActive) {
-                delay(3000)
-                val nextPage = (pagerState.currentPage + 1) % pagerState.pageCount
-                pagerState.animateScrollToPage(
-                    page = nextPage,
-                    animationSpec = tween(600)
-                )
+        if (pagerState.pageCount > 0) {
+            scope.launch {
+                while (isActive) {
+                    delay(3000)
+                    val nextPage = (pagerState.currentPage + 1) % pagerState.pageCount
+                    pagerState.animateScrollToPage(
+                        page = nextPage,
+                        animationSpec = tween(600)
+                    )
+                }
             }
+        } else {
+            Log.e("PagerState", "No pages available to display.")
         }
     }
 

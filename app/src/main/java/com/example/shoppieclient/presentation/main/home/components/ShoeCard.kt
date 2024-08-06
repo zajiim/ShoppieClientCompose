@@ -2,6 +2,7 @@ package com.example.shoppieclient.presentation.main.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,7 +44,8 @@ import org.jetbrains.annotations.Async
 @Composable
 fun ShoeCard(
     shoe: ShoppieItem ?= null,
-    isLoading: Boolean
+    isLoading: Boolean,
+    onClick: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -51,6 +53,7 @@ fun ShoeCard(
             .height(220.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(LightGray)
+            .clickable{ onClick() }
     ) {
         if (isLoading) {
             Box(

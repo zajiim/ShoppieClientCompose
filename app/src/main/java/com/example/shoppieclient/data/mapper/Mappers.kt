@@ -6,6 +6,7 @@ import com.example.shoppieclient.domain.models.ShoppieItem
 fun ShoppieItemDto.toShoppieItem(): ShoppieItem {
     return ShoppieItem(
         id = id,
+        productId = productId,
         name = name,
         brand = brand,
         description = description,

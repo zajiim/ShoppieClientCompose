@@ -23,5 +23,7 @@ data class ShoppieItemDto(
     @SerialName("quantity")
     val quantity: Int,
     @SerialName("__v")
-    val v: Int
+    val v: Int,
+    @SerialName("productId")
+    val productId: String,
 )

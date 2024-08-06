@@ -1,5 +1,6 @@
 package com.example.shoppieclient.data.repository
 
+import android.util.Log
 import com.example.shoppieclient.data.mapper.toShoppieItem
 import com.example.shoppieclient.data.remote.api.ShoppieApi
 import com.example.shoppieclient.domain.auth.models.signin.SignInRequest
@@ -76,7 +77,9 @@ class ShoppieRepoImpl @Inject constructor(
         emit(Resource.Loading(true))
         try {
             val response = shoppieApi.getPopularBrand(token = token, category = category)
-            val shoppieItems = response.products.map { it.toShoppieItem() }
+            val shoppieItems = response.products.map {
+                Log.e("api_mapping", "${it.toShoppieItem()}: " )
+                it.toShoppieItem() }
             emit(Resource.Success(shoppieItems))
         } catch (e: Exception) {
             emit(Resource.Error(message = e.message.toString()))
@@ -122,6 +125,17 @@ class ShoppieRepoImpl @Inject constructor(
             val response = shoppieApi.suggestedForYou(token = token)
             val shoppieItems = response.products.map { it.toShoppieItem() }
             emit(Resource.Success(shoppieItems))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.message.toString()))
+        }
+    }
+
+    override fun getProductDetail(token: String, id: String): Flow<Resource<ShoppieItem>> = flow {
+        emit(Resource.Loading(true))
+        try {
+            val response = shoppieApi.getProductDetail(token, id)
+            val shoppieItem = response.product.toShoppieItem()
+            emit(Resource.Success(shoppieItem))
         } catch (e: Exception) {
             emit(Resource.Error(message = e.message.toString()))
         }

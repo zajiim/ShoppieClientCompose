@@ -12,5 +12,6 @@ object Graph {
     const val AUTH = "auth_graph"
     const val ON_BOARDING = "on_boarding_graph"
     const val MAIN = "main_graph"
+    const val DETAILS = "details/{itemId}"
     const val ADD_PRODUCT = "add_product_graph"
 }

@@ -9,3 +9,10 @@ data class ApiResponse(
     val totalProducts: Int,
     val products: List<ShoppieItemDto>
 )
+
+
+@Serializable
+data class ProductDetailsResponse(
+    val status: String,
+    val product: ShoppieItemDto
+)

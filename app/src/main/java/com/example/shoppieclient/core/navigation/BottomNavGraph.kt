@@ -1,5 +1,6 @@
 package com.example.shoppieclient.core.navigation
 
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
@@ -7,10 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.shoppieclient.presentation.main.cart.CartScreen
 import com.example.shoppieclient.presentation.main.cart.CartViewModel
+import com.example.shoppieclient.presentation.main.details.DetailsScreen
+import com.example.shoppieclient.presentation.main.details.DetailsViewModel
 import com.example.shoppieclient.presentation.main.favorite.FavoriteScreen
 import com.example.shoppieclient.presentation.main.favorite.FavoriteViewModel
 import com.example.shoppieclient.presentation.main.home.HomeScreen
@@ -24,7 +29,6 @@ import com.example.shoppieclient.presentation.main.profile.ProfileScreen
 fun BottomNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-//    scrollBehavior: TopAppBarScrollBehavior,
     bottomPadding: PaddingValues
 ) {
     NavHost(
@@ -40,7 +44,11 @@ fun BottomNavGraph(
                 modifier = modifier,
                 scrollBehavior = homeScrollBehavior,
                 bottomPadding = bottomPadding,
-                viewModel = homeViewModel
+                viewModel = homeViewModel,
+                onNavigateToDetails = { itemId ->
+                    Log.e("tag_navigation", "itemid -----> $itemId ")
+                    navController.navigate("details/$itemId")
+                }
             )
         }
         composable(BottomBarScreen.Favorite.route) {
@@ -71,5 +79,20 @@ fun BottomNavGraph(
         composable(BottomBarScreen.Profile.route) {
             ProfileScreen(modifier = modifier)
         }
+
+        composable(
+            route = Graph.DETAILS,
+            arguments = listOf(navArgument("itemId") { NavType.StringType })
+        ) { navBackStackEntry ->
+            val itemId = navBackStackEntry.arguments?.getString("itemId") ?: ""
+            val detailsViewModel: DetailsViewModel = hiltViewModel()
+            DetailsScreen(
+                onNavigateClick = { navController.navigateUp() },
+                productId =itemId,
+                viewModel = detailsViewModel
+            )
+        }
+
+
     }
 }

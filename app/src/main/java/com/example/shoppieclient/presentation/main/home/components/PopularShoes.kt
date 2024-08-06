@@ -1,5 +1,6 @@
 package com.example.shoppieclient.presentation.main.home.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -47,7 +48,8 @@ fun PopularShoes(
     leadingTitle: String,
     trailingTitle: String,
     shoes: List<ShoppieItem>,
-    isLoading: Boolean
+    isLoading: Boolean,
+    onItemClick: (String) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -87,7 +89,8 @@ fun PopularShoes(
                 items(shoes) { shoe ->
                     ShoeCard(
                         shoe = shoe,
-                        isLoading = false
+                        isLoading = false,
+                        onClick = { onItemClick(shoe.productId) }
                     )
                 }
             }

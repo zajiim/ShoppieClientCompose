@@ -1,5 +1,6 @@
 package com.example.shoppieclient.presentation.main.home
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,7 +48,8 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior,
     bottomPadding: PaddingValues,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    onNavigateToDetails: (String) -> Unit
 ) {
     var query by remember {
         mutableStateOf("")
@@ -111,7 +113,10 @@ fun HomeScreen(
                     leadingTitle = "Popular Items",
                     trailingTitle = "See more",
                     shoes = popularItemsState.data ?: emptyList(),
-                    isLoading = popularItemsState is Resource.Loading
+                    isLoading = popularItemsState is Resource.Loading,
+                    onItemClick = {
+                        itemId -> onNavigateToDetails(itemId)
+                    }
                 )
 
 
@@ -131,7 +136,8 @@ fun HomeScreen(
                     leadingTitle = "Trending Shoes",
                     trailingTitle = "See more",
                     shoes = trendingItemsState.data ?: emptyList(),
-                    isLoading = trendingItemsState is Resource.Loading
+                    isLoading = trendingItemsState is Resource.Loading,
+                    onItemClick = { itemId -> onNavigateToDetails(itemId) }
                 )
 
                 PopularShoes(
@@ -139,7 +145,8 @@ fun HomeScreen(
                     leadingTitle = "Top Rated",
                     trailingTitle = "See more",
                     shoes = topRatedState.data ?: emptyList(),
-                    isLoading = topRatedState is Resource.Loading
+                    isLoading = topRatedState is Resource.Loading,
+                    onItemClick = { itemId -> onNavigateToDetails(itemId) }
                 )
 
                 PopularShoes(
@@ -147,7 +154,8 @@ fun HomeScreen(
                     leadingTitle = "Suggested for you",
                     trailingTitle = "See more",
                     shoes = suggestedForYouState.data ?: emptyList(),
-                    isLoading = suggestedForYouState is Resource.Loading
+                    isLoading = suggestedForYouState is Resource.Loading,
+                    onItemClick = { itemId -> onNavigateToDetails(itemId) }
                 )
 
 

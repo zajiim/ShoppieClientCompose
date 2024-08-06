@@ -16,6 +16,7 @@ class FavoriteViewModel @Inject constructor(
     val favShoppieItems: List<ShoppieItem> = listOf(
         ShoppieItem(
             id = "1",
+            productId = "dwerfsddf",
             images = listOf("https://m.media-amazon.com/images/I/614aiM56siL._SL1500_.jpg"),
             category = "BEST SELLING",
             name = "Nike",
@@ -27,6 +28,7 @@ class FavoriteViewModel @Inject constructor(
 
         ShoppieItem(
             id = "1",
+            productId = "dwerfdf",
             images = listOf("https://m.media-amazon.com/images/I/614aiM56siL._SL1500_.jpg"),
             category = "BEST SELLING",
             name = "Nike",
