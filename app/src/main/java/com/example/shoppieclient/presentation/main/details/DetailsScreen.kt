@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -53,6 +54,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.shoppieclient.presentation.main.components.CustomNavigationTopAppBar
 import com.example.shoppieclient.presentation.main.details.components.AddCartBottomSection
+import com.example.shoppieclient.presentation.main.details.components.CustomSizeSection
 import com.example.shoppieclient.presentation.main.details.components.ProductImage
 import com.example.shoppieclient.presentation.main.details.components.ThumbnailImage
 import com.example.shoppieclient.ui.theme.BackGroundColor
@@ -175,6 +177,8 @@ fun DetailsScreen(
                     }
                 }
             }
+
+            CustomSizeSection(modifier = Modifier.fillMaxWidth().wrapContentHeight())
             
             Spacer(modifier = Modifier.height(140.dp))
         }
