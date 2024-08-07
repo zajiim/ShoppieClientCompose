@@ -29,7 +29,10 @@ import com.example.shoppieclient.ui.theme.SubTitleColor
 @Composable
 fun AddCartBottomSection(
     modifier: Modifier = Modifier,
-    price: String?
+    price: String?,
+    selectedRegion: String,
+    selectedSize: Int,
+    onAddToCartClick: (String, Int) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -66,7 +69,7 @@ fun AddCartBottomSection(
             text = "Add To Cart",
             backgroundColor = PrimaryBlue,
             contentColor = Color.White,
-            onButtonClicked = { /*TODO*/ },
+            onButtonClicked = { onAddToCartClick(selectedRegion, selectedSize) },
             isLoading = false
         )
     }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -29,13 +30,15 @@ import com.example.shoppieclient.utils.usaList
 
 @Composable
 fun CustomSizeSection(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    selectedRegion: String,
+    selectedSize: Int,
+    onRegionSelected: (String) -> Unit,
+    onSizeSelected: (Int) -> Unit
 ) {
-    var selectedRegion by remember { mutableStateOf("EU") }
-    var selectedSize by remember { mutableStateOf<Double?>(null) }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -60,21 +63,21 @@ fun CustomSizeSection(
                     region = "EU",
                     selectedRegion = selectedRegion
                 ) {
-                    selectedRegion = "EU"
+                    onRegionSelected("EU")
                 }
 
                 RegionButtons(
                     region = "US",
                     selectedRegion = selectedRegion
                 ) {
-                    selectedRegion = "US"
+                    onRegionSelected("US")
                 }
 
                 RegionButtons(
                     region = "UK",
                     selectedRegion = selectedRegion
                 ) {
-                    selectedRegion = "UK"
+                    onRegionSelected("UK")
                 }
             }
 
@@ -84,16 +87,17 @@ fun CustomSizeSection(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             val sizes = when(selectedRegion) {
-                "EU" -> euList
-                "US" -> usaList
-                "UK" -> ukList
+                "EU" -> (38..43).toList()
+                "US" -> (5..10).toList()
+                "UK" -> (4..9).toList()
                 else -> emptyList()
             }
             items(sizes) { size ->
                 SizeButtons(
                     size = size,
-                    isSelected =  selectedSize == size) {
-                    selectedSize = size
+                    isSelected =  selectedSize == size
+                ) {
+                    onSizeSelected(size)
                 }
             }
 
@@ -102,8 +106,3 @@ fun CustomSizeSection(
 
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun CustomPreview() {
-    CustomSizeSection()
-}

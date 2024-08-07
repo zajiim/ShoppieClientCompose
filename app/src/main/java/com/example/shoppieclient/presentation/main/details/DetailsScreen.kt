@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
@@ -51,14 +50,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import com.example.shoppieclient.presentation.main.components.CustomNavigationTopAppBar
 import com.example.shoppieclient.presentation.main.details.components.AddCartBottomSection
 import com.example.shoppieclient.presentation.main.details.components.CustomSizeSection
 import com.example.shoppieclient.presentation.main.details.components.ProductImage
 import com.example.shoppieclient.presentation.main.details.components.ThumbnailImage
 import com.example.shoppieclient.ui.theme.BackGroundColor
-import com.example.shoppieclient.ui.theme.LightGray
 import com.example.shoppieclient.ui.theme.PrimaryBlue
 import com.example.shoppieclient.ui.theme.SubTitleColor
 import kotlinx.coroutines.launch
@@ -76,14 +73,18 @@ fun DetailsScreen(
     val pagerState = rememberPagerState(pageCount = { productDetailsState.data?.images?.size ?: 0 })
     var selectedImageIndex by remember { mutableIntStateOf(0) }
     val scope = rememberCoroutineScope()
-    var expanded by remember {mutableStateOf(false)}
+    var expanded by remember { mutableStateOf(false) }
     val maxLines by animateIntAsState(
         targetValue = if (expanded) Int.MAX_VALUE else 3,
         label = "max lines",
-        animationSpec = tween(300))
+        animationSpec = tween(300)
+    )
+
+    var selectedRegion by remember { mutableStateOf("EU") }
+    var selectedSize by remember { mutableIntStateOf(40) }
 
     LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }.collect{ page ->
+        snapshotFlow { pagerState.currentPage }.collect { page ->
             selectedImageIndex = page
         }
     }
@@ -114,54 +115,70 @@ fun DetailsScreen(
                 }
             }
 
-            productDetailsState.data?.category?.let { Text(text = it, style = TextStyle(
-                color = PrimaryBlue,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium
-            ),
+            productDetailsState.data?.category?.let {
+                Text(
+                    text = it, style = TextStyle(
+                        color = PrimaryBlue,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium
+                    ),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+            }
+
+
+            productDetailsState.data?.name?.let {
+                Text(
+                    text = it, style = TextStyle(
+                        color = Color.Black,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+            }
+
+            productDetailsState.data?.price?.let {
+                Text(
+                    text = "₹ $it", style = TextStyle(
+                        color = Color.Black,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+            }
+
+            productDetailsState.data?.description?.let {
+                Text(text = it,
+                    style = TextStyle(
+                        color = SubTitleColor,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal
+                    ),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = maxLines,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .clickable { expanded = !expanded })
+            }
+
+
+            Text(
+                text = "Gallery", style = TextStyle(
+                    color = Color.Black,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold
+                ),
                 modifier = Modifier.padding(horizontal = 16.dp)
-            ) }
-
-
-            productDetailsState.data?.name?.let { Text(text = it, style = TextStyle(
-                color = Color.Black,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            ),
-                modifier = Modifier.padding(horizontal = 16.dp)) }
-
-            productDetailsState.data?.price?.let { Text(text = "₹ $it", style = TextStyle(
-                color = Color.Black,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold
-            ),
-                modifier = Modifier.padding(horizontal = 16.dp)) }
-
-            productDetailsState.data?.description?.let { Text(text = it,
-                style = TextStyle(
-                color = SubTitleColor,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Normal
-            ),
-                overflow = TextOverflow.Ellipsis,
-                maxLines = maxLines,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .clickable { expanded = !expanded }) }
-            
-
-            Text(text = "Gallery", style = TextStyle(
-                color = Color.Black,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold
-            ),
-                modifier = Modifier.padding(horizontal = 16.dp))
+            )
 
             LazyRow(
                 modifier = Modifier
                     .height(80.dp)
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 16.dp)) {
+                    .padding(vertical = 8.dp, horizontal = 16.dp)
+            ) {
                 productDetailsState.data?.images?.let { images ->
                     itemsIndexed(images) { index, item ->
                         ThumbnailImage(
@@ -178,8 +195,20 @@ fun DetailsScreen(
                 }
             }
 
-            CustomSizeSection(modifier = Modifier.fillMaxWidth().wrapContentHeight())
-            
+            CustomSizeSection(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                selectedRegion = selectedRegion,
+                selectedSize = selectedSize,
+                onRegionSelected = {
+                    selectedRegion = it
+                },
+                onSizeSelected = {
+                    selectedSize = it
+                }
+            )
+
             Spacer(modifier = Modifier.height(140.dp))
         }
 
@@ -210,7 +239,13 @@ fun DetailsScreen(
                 .align(Alignment.BottomCenter)
                 .wrapContentSize(Alignment.BottomCenter)
                 .padding(bottom = bottomPadding.calculateBottomPadding()),
-            price = productDetailsState.data?.price.toString()
+            price = productDetailsState.data?.price.toString(),
+            selectedRegion = selectedRegion,
+            selectedSize = selectedSize,
+            onAddToCartClick = { region, size ->
+                selectedRegion = region
+                selectedSize = size
+            }
         )
 
     }

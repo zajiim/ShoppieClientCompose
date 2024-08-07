@@ -24,7 +24,7 @@ import com.example.shoppieclient.ui.theme.SubTitleColor
 
 @Composable
 fun SizeButtons(
-    size: Double,
+    size: Int,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
@@ -53,7 +53,7 @@ fun SizeButtons(
 @Composable
 private fun PreviewBtn() {
     SizeButtons(
-        size = 40.0,
+        size = 40,
         isSelected = false,
         onClick = {}
     )
