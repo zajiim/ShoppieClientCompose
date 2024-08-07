@@ -88,7 +88,8 @@ fun BottomNavGraph(
             DetailsScreen(
                 onNavigateClick = { navController.navigateUp() },
                 viewModel = detailsViewModel,
-                bottomPadding = bottomPadding
+                bottomPadding = bottomPadding,
+                onCartClick = { navController.navigate(BottomBarScreen.Cart.route) }
             )
         }
 

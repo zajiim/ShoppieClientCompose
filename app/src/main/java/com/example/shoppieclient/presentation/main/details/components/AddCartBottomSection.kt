@@ -32,7 +32,7 @@ fun AddCartBottomSection(
     price: String?,
     selectedRegion: String,
     selectedSize: Int,
-    onAddToCartClick: (String, Int) -> Unit
+    onAddToCartClick: (String, Int) -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -44,7 +44,9 @@ fun AddCartBottomSection(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
-            modifier = Modifier.fillMaxHeight().padding(horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.Center
         ) {
             Text(
@@ -69,7 +71,9 @@ fun AddCartBottomSection(
             text = "Add To Cart",
             backgroundColor = PrimaryBlue,
             contentColor = Color.White,
-            onButtonClicked = { onAddToCartClick(selectedRegion, selectedSize) },
+            onButtonClicked = {
+                onAddToCartClick(selectedRegion, selectedSize)
+            },
             isLoading = false
         )
     }

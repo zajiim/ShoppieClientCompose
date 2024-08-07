@@ -1,5 +1,6 @@
 package com.example.shoppieclient.presentation.main.details
 
+import android.widget.Toast
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -45,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -66,6 +68,7 @@ fun DetailsScreen(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
     onNavigateClick: () -> Unit,
+    onCartClick: () -> Unit,
     viewModel: DetailsViewModel,
     bottomPadding: PaddingValues
 ) {
@@ -79,6 +82,7 @@ fun DetailsScreen(
         label = "max lines",
         animationSpec = tween(300)
     )
+    val ctx = LocalContext.current
 
     var selectedRegion by remember { mutableStateOf("EU") }
     var selectedSize by remember { mutableIntStateOf(40) }
@@ -245,6 +249,8 @@ fun DetailsScreen(
             onAddToCartClick = { region, size ->
                 selectedRegion = region
                 selectedSize = size
+                Toast.makeText(ctx, "$region and $size", Toast.LENGTH_SHORT).show()
+                onCartClick()
             }
         )
 

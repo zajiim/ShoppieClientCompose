@@ -1,22 +1,55 @@
 package com.example.shoppieclient.domain.auth.models.signin
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+
+@Serializable
 data class SignInResponse(
-    @SerializedName("address")
+    @SerialName("address")
     val address: String,
-    @SerializedName("email")
+    @SerialName("email")
     val email: String,
-    @SerializedName("_id")
+    @SerialName("_id")
     val id: String,
-    @SerializedName("name")
+    @SerialName("name")
     val name: String,
-    @SerializedName("password")
+    @SerialName("password")
     val password: String,
-    @SerializedName("token")
+    @SerialName("token")
     val token: String,
-    @SerializedName("type")
+    @SerialName("type")
     val type: String,
-    @SerializedName("__v")
-    val v: Int
+    @SerialName("__v")
+    val v: Int,
+    @SerialName("cart")
+    val cart: List<CartItem>
+)
+
+@Serializable
+data class CartItem(
+    @SerialName("product")
+    val product: Product,
+    @SerialName("quantity")
+    val quantity: Int
+)
+
+@Serializable
+data class Product(
+    @SerialName("productId")
+    val productId: String,
+    @SerialName("name")
+    val name: String,
+    @SerialName("brand")
+    val brand: String,
+    @SerialName("description")
+    val description: String,
+    @SerialName("quantity")
+    val quantity: Int,
+    @SerialName("price")
+    val price: Double,
+    @SerialName("category")
+    val category: String,
+    @SerialName("images")
+    val images: List<String>
 )
