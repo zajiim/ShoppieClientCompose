@@ -1,10 +1,14 @@
 package com.example.shoppieclient.presentation.main.details
 
+import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -62,12 +67,18 @@ fun DetailsScreen(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
     onNavigateClick: () -> Unit,
-    viewModel: DetailsViewModel
+    viewModel: DetailsViewModel,
+    bottomPadding: PaddingValues
 ) {
     val productDetailsState by viewModel.productDetails.collectAsState()
     val pagerState = rememberPagerState(pageCount = { productDetailsState.data?.images?.size ?: 0 })
     var selectedImageIndex by remember { mutableIntStateOf(0) }
     val scope = rememberCoroutineScope()
+    var expanded by remember {mutableStateOf(false)}
+    val maxLines by animateIntAsState(
+        targetValue = if (expanded) Int.MAX_VALUE else 3,
+        label = "max lines",
+        animationSpec = tween(300))
 
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }.collect{ page ->
@@ -124,12 +135,17 @@ fun DetailsScreen(
             ),
                 modifier = Modifier.padding(horizontal = 16.dp)) }
 
-            productDetailsState.data?.description?.let { Text(text = it, style = TextStyle(
+            productDetailsState.data?.description?.let { Text(text = it,
+                style = TextStyle(
                 color = SubTitleColor,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal
             ),
-                modifier = Modifier.padding(horizontal = 16.dp)) }
+                overflow = TextOverflow.Ellipsis,
+                maxLines = maxLines,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .clickable { expanded = !expanded }) }
             
 
             Text(text = "Gallery", style = TextStyle(
@@ -188,7 +204,8 @@ fun DetailsScreen(
         AddCartBottomSection(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .wrapContentSize(Alignment.BottomCenter),
+                .wrapContentSize(Alignment.BottomCenter)
+                .padding(bottom = bottomPadding.calculateBottomPadding()),
             price = productDetailsState.data?.price.toString()
         )
 

@@ -87,7 +87,8 @@ fun BottomNavGraph(
             val detailsViewModel: DetailsViewModel = hiltViewModel()
             DetailsScreen(
                 onNavigateClick = { navController.navigateUp() },
-                viewModel = detailsViewModel
+                viewModel = detailsViewModel,
+                bottomPadding = bottomPadding
             )
         }
 
