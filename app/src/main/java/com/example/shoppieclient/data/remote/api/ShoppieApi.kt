@@ -1,9 +1,9 @@
 package com.example.shoppieclient.data.remote.api
 
+import com.example.shoppieclient.data.remote.dto.UserDto
 import com.example.shoppieclient.domain.auth.models.home.ApiResponse
 import com.example.shoppieclient.domain.auth.models.home.ProductDetailsResponse
 import com.example.shoppieclient.domain.auth.models.signin.SignInRequest
-import com.example.shoppieclient.domain.auth.models.signin.SignInResponse
 import com.example.shoppieclient.domain.auth.models.signin.TokenValidationResponse
 import com.example.shoppieclient.domain.auth.models.signup.SignUpRequest
 import com.example.shoppieclient.domain.auth.models.signup.SignUpResponse
@@ -24,7 +24,7 @@ interface ShoppieApi {
     @POST("api/signin")
     suspend fun signIn(
         @Body signInRequest: SignInRequest
-    ): SignInResponse
+    ): UserDto
 
     @POST("api/tokenIsValid")
     suspend fun isTokenValid(

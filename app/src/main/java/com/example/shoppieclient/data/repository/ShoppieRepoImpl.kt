@@ -1,11 +1,12 @@
 package com.example.shoppieclient.data.repository
 
 import android.util.Log
+import com.example.shoppieclient.data.mapper.signin.toUser
 import com.example.shoppieclient.data.mapper.toShoppieItem
 import com.example.shoppieclient.data.remote.api.ShoppieApi
 import com.example.shoppieclient.domain.auth.models.signin.SignInRequest
-import com.example.shoppieclient.domain.auth.models.signin.SignInResponse
 import com.example.shoppieclient.domain.auth.models.signin.TokenValidationResponse
+import com.example.shoppieclient.domain.auth.models.signin.User
 import com.example.shoppieclient.domain.auth.models.signup.SignUpRequest
 import com.example.shoppieclient.domain.auth.models.signup.SignUpResponse
 import com.example.shoppieclient.domain.auth.repository.ShoppieRepo
@@ -36,14 +37,14 @@ class ShoppieRepoImpl @Inject constructor(
         }
     }
 
-    override fun signIn(email: String, password: String): Flow<Resource<SignInResponse>> = flow {
+    override fun signIn(email: String, password: String): Flow<Resource<User>> = flow {
         try {
             val response = shoppieApi.signIn(
                 SignInRequest(
                     email, password
                 )
             )
-            emit(Resource.Success(data = response))
+            emit(Resource.Success(data = response.toUser()))
         } catch (e: Exception) {
             emit(Resource.Error(message = e.message.toString()))
         }
