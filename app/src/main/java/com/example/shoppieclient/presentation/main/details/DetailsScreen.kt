@@ -254,7 +254,6 @@ fun DetailsScreen(
                 selectedRegion = region
                 selectedSize = size
                 viewModel.onAddToCartClick(productDetailsState.data?.id.toString())
-                Log.e("tag_cart_count", "${sharedViewModel.userCartItemCount.value} ")
             }
         )
     }

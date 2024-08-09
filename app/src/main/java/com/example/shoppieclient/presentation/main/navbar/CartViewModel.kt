@@ -1,5 +1,6 @@
 package com.example.shoppieclient.presentation.main.navbar
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shoppieclient.domain.main.use_cases.DataStoreUseCases
@@ -12,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CartViewModel @Inject constructor(
+class NavBarCartViewModel @Inject constructor(
     private val dataStoreUseCases: DataStoreUseCases
 ): ViewModel() {
     private val _cartCount = MutableStateFlow(0)

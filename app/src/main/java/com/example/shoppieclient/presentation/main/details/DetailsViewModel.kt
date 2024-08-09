@@ -9,12 +9,16 @@ import com.example.shoppieclient.domain.auth.use_cases.details.AddToCartUseCases
 import com.example.shoppieclient.domain.auth.use_cases.details.GetProductDetailsUseCase
 import com.example.shoppieclient.domain.main.use_cases.DataStoreUseCases
 import com.example.shoppieclient.domain.models.ShoppieItem
+import com.example.shoppieclient.presentation.main.cart.CartViewModel
+import com.example.shoppieclient.presentation.main.navbar.NavBarCartViewModel
 import com.example.shoppieclient.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,6 +34,7 @@ class DetailsViewModel @Inject constructor(
 
     private val _userDetails = MutableStateFlow<Resource<User>>(Resource.Loading(true))
     val userDetails = _userDetails.asStateFlow()
+
 
     init {
         val productId = savedStateHandle.get<String>("itemId")
@@ -63,10 +68,15 @@ class DetailsViewModel @Inject constructor(
     }
 
     private fun addToCart(id: String, token: String) = viewModelScope.launch {
-        addToCartUseCases(token, id).collect{ result ->
-            Log.e("tag_addcart", "addToCart: >>>>>> $result " )
-            _userDetails.value = result
-        }
+            addToCartUseCases(token, id).collect { result ->
+                _userDetails.value = result
+                if (result is Resource.Success) {
+                    result.data?.let { user ->
+                        dataStoreUseCase.saveCartCountUseCase(user.cart.size)
+                    }
+                }
+            }
+
     }
 
 }
