@@ -12,6 +12,8 @@ import com.example.shoppieclient.domain.auth.models.signin.SignInRequest
 import com.example.shoppieclient.domain.auth.use_cases.signIn.SignInValidationUseCases
 import com.example.shoppieclient.domain.main.use_cases.DataStoreUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -26,7 +28,8 @@ class LoginViewModel @Inject constructor(
 ): ViewModel(){
     private val _signInState: MutableState<SignInState> = mutableStateOf(SignInState())
     val signInState = _signInState
-
+    private val _userCartItemCount = MutableStateFlow(0)
+    val userCartItemCount: StateFlow<Int> = _userCartItemCount
     fun onEmailChange(newValue: String) {
         signInState.value = signInState.value.copy(
             emailInput = newValue
@@ -131,7 +134,7 @@ class LoginViewModel @Inject constructor(
                     )
                 )
 
-                Log.e(TAG, "after onLoginClick: >>>>>>>>", )
+                Log.e(TAG, "after onLoginClick: >>>>>>>>${loginResult.cart.size}", )
                 Log.e(TAG, loginResult.token)
 
                 dataStoreUseCases.saveTokenUseCase(loginResult.token)
@@ -170,6 +173,7 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
+
 
 
 }

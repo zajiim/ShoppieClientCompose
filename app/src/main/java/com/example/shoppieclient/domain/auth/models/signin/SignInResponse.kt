@@ -2,11 +2,11 @@ package com.example.shoppieclient.domain.auth.models.signin
 
 
 data class User(
-    val token: String,
+    val token: String?,
     val id: String,
     val name: String,
     val email: String,
-    val address: String,
+    val address: String?,
     val type: String,
     val cart: List<CartItem>
 )

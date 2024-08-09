@@ -38,4 +38,6 @@ interface ShoppieRepo {
 
     fun getProductDetail(token: String, id: String): Flow<Resource<ShoppieItem>>
 
+    fun addToCart(token: String, id: String): Flow<Resource<User>>
+
 }

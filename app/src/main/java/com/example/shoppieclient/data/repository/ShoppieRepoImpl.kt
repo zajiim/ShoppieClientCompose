@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.shoppieclient.data.mapper.signin.toUser
 import com.example.shoppieclient.data.mapper.toShoppieItem
 import com.example.shoppieclient.data.remote.api.ShoppieApi
+import com.example.shoppieclient.domain.auth.models.cart.AddToCartRequest
 import com.example.shoppieclient.domain.auth.models.signin.SignInRequest
 import com.example.shoppieclient.domain.auth.models.signin.TokenValidationResponse
 import com.example.shoppieclient.domain.auth.models.signin.User
@@ -79,7 +80,7 @@ class ShoppieRepoImpl @Inject constructor(
         try {
             val response = shoppieApi.getPopularBrand(token = token, category = category)
             val shoppieItems = response.products.map {
-                Log.e("api_mapping", "${it.toShoppieItem()}: " )
+                Log.e("api_mapping", "${it.toShoppieItem().id}: " )
                 it.toShoppieItem() }
             emit(Resource.Success(shoppieItems))
         } catch (e: Exception) {
@@ -137,6 +138,19 @@ class ShoppieRepoImpl @Inject constructor(
             val response = shoppieApi.getProductDetail(token, id)
             val shoppieItem = response.product.toShoppieItem()
             emit(Resource.Success(shoppieItem))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.message.toString()))
+        }
+    }
+
+    override fun addToCart(token: String, id: String): Flow<Resource<User>> = flow {
+        emit(Resource.Loading(true))
+        try {
+            val response = shoppieApi.addToCart(token, AddToCartRequest(id = id))
+            Log.e("tag_cart_count_api_impl", "before >>>>${response} ")
+            val userItem = response.toUser()
+            Log.e("tag_cart_count_api_impl", "after >>>>>> ${userItem} ")
+            emit(Resource.Success(userItem))
         } catch (e: Exception) {
             emit(Resource.Error(message = e.message.toString()))
         }

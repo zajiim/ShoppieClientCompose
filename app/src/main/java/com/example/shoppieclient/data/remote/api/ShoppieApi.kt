@@ -1,6 +1,7 @@
 package com.example.shoppieclient.data.remote.api
 
 import com.example.shoppieclient.data.remote.dto.UserDto
+import com.example.shoppieclient.domain.auth.models.cart.AddToCartRequest
 import com.example.shoppieclient.domain.auth.models.home.ApiResponse
 import com.example.shoppieclient.domain.auth.models.home.ProductDetailsResponse
 import com.example.shoppieclient.domain.auth.models.signin.SignInRequest
@@ -67,6 +68,12 @@ interface ShoppieApi {
         @Header("x-auth-token") token: String,
         @Path("id") id: String
     ): ProductDetailsResponse
+
+    @POST("api/add-to-cart")
+    suspend fun addToCart(
+        @Header("x-auth-token") token: String,
+        @Body requestBody: AddToCartRequest
+    ): UserDto
 
 
 }

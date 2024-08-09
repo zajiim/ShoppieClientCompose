@@ -11,7 +11,7 @@ data class UserDto(
     @SerialName("email")
     val email: String,
     @SerialName("_id")
-    val id: String,
+    val _id: String,
     @SerialName("name")
     val name: String,
     @SerialName("password")

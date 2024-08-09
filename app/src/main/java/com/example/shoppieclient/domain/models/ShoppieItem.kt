@@ -2,7 +2,7 @@ package com.example.shoppieclient.domain.models
 
 
 data class ShoppieItem(
-    val id: String?,
+    val id: String,
     val productId: String,
     val name: String?,
     val brand: String?,

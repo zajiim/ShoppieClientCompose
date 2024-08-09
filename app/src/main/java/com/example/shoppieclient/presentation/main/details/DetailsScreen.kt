@@ -1,5 +1,6 @@
 package com.example.shoppieclient.presentation.main.details
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
@@ -52,6 +53,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.shoppieclient.data.mapper.signin.toUser
 import com.example.shoppieclient.presentation.main.components.CustomNavigationTopAppBar
 import com.example.shoppieclient.presentation.main.details.components.AddCartBottomSection
 import com.example.shoppieclient.presentation.main.details.components.CustomSizeSection
@@ -68,7 +70,6 @@ fun DetailsScreen(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
     onNavigateClick: () -> Unit,
-    onCartClick: () -> Unit,
     viewModel: DetailsViewModel,
     bottomPadding: PaddingValues
 ) {
@@ -249,8 +250,8 @@ fun DetailsScreen(
             onAddToCartClick = { region, size ->
                 selectedRegion = region
                 selectedSize = size
-                Toast.makeText(ctx, "$region and $size", Toast.LENGTH_SHORT).show()
-                onCartClick()
+                viewModel.onAddToCartClick(productDetailsState.data?.id.toString())
+                Log.e("tag_cart_count", "${viewModel.userDetails.value.data?.cart?.size} ")
             }
         )
 
