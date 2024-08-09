@@ -24,10 +24,13 @@ import com.example.shoppieclient.domain.auth.use_cases.signUp.SignUpValidationPa
 import com.example.shoppieclient.domain.auth.use_cases.signUp.SignUpValidationUseCases
 import com.example.shoppieclient.domain.main.datamanager.LocalUserManager
 import com.example.shoppieclient.domain.main.use_cases.DataStoreUseCases
+import com.example.shoppieclient.domain.main.use_cases.ReadCartCountUseCase
 import com.example.shoppieclient.domain.main.use_cases.ReadOnBoardingUseCase
 import com.example.shoppieclient.domain.main.use_cases.ReadTokenUseCase
+import com.example.shoppieclient.domain.main.use_cases.SaveCartCountUseCase
 import com.example.shoppieclient.domain.main.use_cases.SaveOnBoardingUseCase
 import com.example.shoppieclient.domain.main.use_cases.SaveTokenUseCase
+import com.example.shoppieclient.presentation.auth.signin.SharedViewModel
 import com.example.shoppieclient.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -62,7 +65,9 @@ object ShoppieAppModule {
         SaveTokenUseCase(localUserManager),
         ReadTokenUseCase(localUserManager),
         SaveOnBoardingUseCase(localUserManager),
-        ReadOnBoardingUseCase(localUserManager)
+        ReadOnBoardingUseCase(localUserManager),
+        SaveCartCountUseCase(localUserManager),
+        ReadCartCountUseCase(localUserManager)
     )
 
     @Provides
@@ -201,6 +206,12 @@ object ShoppieAppModule {
     @Singleton
     fun provideAddToCartUseCase(repo: ShoppieRepo): AddToCartUseCases {
         return AddToCartUseCases(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSharedViewModel(): SharedViewModel {
+        return SharedViewModel()
     }
 
 

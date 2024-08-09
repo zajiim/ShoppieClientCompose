@@ -53,7 +53,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.shoppieclient.data.mapper.signin.toUser
+import com.example.shoppieclient.presentation.auth.signin.SharedViewModel
 import com.example.shoppieclient.presentation.main.components.CustomNavigationTopAppBar
 import com.example.shoppieclient.presentation.main.details.components.AddCartBottomSection
 import com.example.shoppieclient.presentation.main.details.components.CustomSizeSection
@@ -73,6 +75,7 @@ fun DetailsScreen(
     viewModel: DetailsViewModel,
     bottomPadding: PaddingValues
 ) {
+    val sharedViewModel: SharedViewModel = hiltViewModel()
     val productDetailsState by viewModel.productDetails.collectAsState()
     val pagerState = rememberPagerState(pageCount = { productDetailsState.data?.images?.size ?: 0 })
     var selectedImageIndex by remember { mutableIntStateOf(0) }
@@ -251,10 +254,9 @@ fun DetailsScreen(
                 selectedRegion = region
                 selectedSize = size
                 viewModel.onAddToCartClick(productDetailsState.data?.id.toString())
-                Log.e("tag_cart_count", "${viewModel.userDetails.value.data?.cart?.size} ")
+                Log.e("tag_cart_count", "${sharedViewModel.userCartItemCount.value} ")
             }
         )
-
     }
 }
 

@@ -23,7 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.shoppieclient.core.navigation.BottomNavGraph
-import com.example.shoppieclient.presentation.auth.signin.LoginViewModel
+import com.example.shoppieclient.presentation.auth.signin.SharedViewModel
 import com.example.shoppieclient.presentation.main.home.components.BottomNavBar
 
 
@@ -32,12 +32,10 @@ import com.example.shoppieclient.presentation.main.home.components.BottomNavBar
 fun NavBarScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
+    cartViewModel: CartViewModel = hiltViewModel()
 ) {
-//    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    val loginViewModel: LoginViewModel = hiltViewModel()
-    val cartCount by loginViewModel.userCartItemCount.collectAsState()
-    Log.e("tag_cart_count", "$cartCount: ", )
+    val cartCount by cartViewModel.cartCount.collectAsState()
     Scaffold(
         bottomBar = {
             BottomNavBar(

@@ -3,6 +3,7 @@ package com.example.shoppieclient.presentation.auth.signin
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shoppieclient.data.remote.api.ShoppieApi
@@ -20,16 +21,18 @@ import javax.inject.Inject
 
 
 const val TAG = "LoginViewModel"
+
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val validationUseCases: SignInValidationUseCases,
     private val shoppieRepo: ShoppieApi,
-    private val dataStoreUseCases: DataStoreUseCases
-): ViewModel(){
+    private val dataStoreUseCases: DataStoreUseCases,
+    private val sharedViewModel: SharedViewModel
+) : ViewModel() {
     private val _signInState: MutableState<SignInState> = mutableStateOf(SignInState())
     val signInState = _signInState
-    private val _userCartItemCount = MutableStateFlow(0)
-    val userCartItemCount: StateFlow<Int> = _userCartItemCount
+
+
     fun onEmailChange(newValue: String) {
         signInState.value = signInState.value.copy(
             emailInput = newValue
@@ -48,22 +51,19 @@ class LoginViewModel @Inject constructor(
         signInState.value = when (emailValidationResult) {
             EmailValidationType.EMPTY_EMAIL -> {
                 signInState.value.copy(
-                    emailErrorMsgInput = "Please enter an email",
-                    isInputValid = false
+                    emailErrorMsgInput = "Please enter an email", isInputValid = false
                 )
             }
 
             EmailValidationType.INVALID_EMAIL -> {
                 signInState.value.copy(
-                    emailErrorMsgInput = "Please enter a valid email",
-                    isInputValid = false
+                    emailErrorMsgInput = "Please enter a valid email", isInputValid = false
                 )
             }
 
             EmailValidationType.VALID_EMAIL -> {
                 signInState.value.copy(
-                    emailErrorMsgInput = null,
-                    isInputValid = true
+                    emailErrorMsgInput = null, isInputValid = true
                 )
             }
         }
@@ -88,22 +88,19 @@ class LoginViewModel @Inject constructor(
         signInState.value = when (passwordValidationResult) {
             PasswordValidationType.EMPTY_PASSWORD -> {
                 signInState.value.copy(
-                    passwordErrorMsgInput = "Please enter a password",
-                    isInputValid = false
+                    passwordErrorMsgInput = "Please enter a password", isInputValid = false
                 )
             }
 
             PasswordValidationType.INVALID_PASSWORD -> {
                 signInState.value.copy(
-                    passwordErrorMsgInput = "Please enter a valid password",
-                    isInputValid = false
+                    passwordErrorMsgInput = "Please enter a valid password", isInputValid = false
                 )
             }
 
             PasswordValidationType.VALID_PASSWORD -> {
                 signInState.value.copy(
-                    passwordErrorMsgInput = null,
-                    isInputValid = true
+                    passwordErrorMsgInput = null, isInputValid = true
                 )
             }
         }
@@ -125,7 +122,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
 
             signInState.value = try {
-                Log.e(TAG, "onLoginClick: >>>>>>>>", )
+                Log.e(TAG, "onLoginClick: >>>>>>>>")
 
                 val loginResult = shoppieRepo.signIn(
                     SignInRequest(
@@ -134,12 +131,16 @@ class LoginViewModel @Inject constructor(
                     )
                 )
 
-                Log.e(TAG, "after onLoginClick: >>>>>>>>${loginResult.cart.size}", )
+                Log.e(TAG, "after onLoginClick: >>>>>>>>${loginResult.cart.size}")
                 Log.e(TAG, loginResult.token)
 
                 dataStoreUseCases.saveTokenUseCase(loginResult.token)
 
-                Log.e(TAG, "after datastore: >>>>>>>>", )
+                dataStoreUseCases.saveCartCountUseCase(loginResult.cart.size)
+
+//                sharedViewModel.updateCartCount(loginResult.cart.size)
+
+                Log.e(TAG, "after datastore: >>>>>>>>")
 
                 signInState.value.copy(
                     isSuccessfullyLoggedIn = true,
@@ -152,8 +153,7 @@ class LoginViewModel @Inject constructor(
             } catch (e: HttpException) {
                 if (e.code() == 400) {
                     signInState.value.copy(
-                        errorMsgLoginProcess = e.message(),
-                        isLoading = false
+                        errorMsgLoginProcess = e.message(), isLoading = false
                     )
                 } else {
                     Log.e(TAG, "onLoginClick: errorr >>>>>>> ${e.message()}")
@@ -173,7 +173,6 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
-
 
 
 }

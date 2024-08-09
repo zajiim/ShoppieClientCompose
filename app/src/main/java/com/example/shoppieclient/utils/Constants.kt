@@ -6,4 +6,5 @@ object Constants {
     const val DATASTORE_NAME = "datastore_name"
     const val DATASTORE_TOKEN = "datastore_token"
     const val ONBOARDING_VALUE = "onboarding_value"
+    const val CART_COUNT = "cart_count"
 }
