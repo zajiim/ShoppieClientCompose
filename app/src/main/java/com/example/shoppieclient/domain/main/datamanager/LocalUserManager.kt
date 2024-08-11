@@ -11,7 +11,4 @@ interface LocalUserManager {
 
     fun readAppToken(): Flow<String?>
 
-    suspend fun saveCartCount(count: Int)
-
-    fun readCartCount(): Flow<Int>
 }

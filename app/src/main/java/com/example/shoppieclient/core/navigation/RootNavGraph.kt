@@ -10,6 +10,7 @@ import com.example.shoppieclient.presentation.main.navbar.NavBarScreen
 import com.example.shoppieclient.presentation.on_boarding.OnBoardingViewModel
 import com.example.shoppieclient.presentation.on_boarding.OnboardingScreen
 
+
 @Composable
 fun RootNavGraph(
     mainActivityViewModel: MainActivityViewModel = hiltViewModel()

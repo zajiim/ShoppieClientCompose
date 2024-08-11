@@ -1,5 +1,7 @@
 package com.example.shoppieclient.domain.auth.repository
 
+import com.example.shoppieclient.data.remote.dto.CartCountDto
+import com.example.shoppieclient.domain.auth.models.home.CartCount
 import com.example.shoppieclient.domain.auth.models.signin.TokenValidationResponse
 import com.example.shoppieclient.domain.auth.models.signin.User
 import com.example.shoppieclient.domain.auth.models.signup.SignUpResponse
@@ -39,5 +41,7 @@ interface ShoppieRepo {
     fun getProductDetail(token: String, id: String): Flow<Resource<ShoppieItem>>
 
     fun addToCart(token: String, id: String): Flow<Resource<User>>
+
+    fun getCartCount(token: String): Flow<Resource<CartCount>>
 
 }

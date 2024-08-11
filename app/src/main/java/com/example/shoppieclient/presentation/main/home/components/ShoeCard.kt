@@ -73,7 +73,7 @@ fun ShoeCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(140.dp),
-                    model = shoe?.images?.get(0),
+                    model = shoe?.images?.getOrNull(0)?: "default_image_url_here",
                     contentDescription = shoe?.name,
                     contentScale = ContentScale.FillBounds
                 )

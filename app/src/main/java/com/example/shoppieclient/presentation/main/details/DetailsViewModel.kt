@@ -27,7 +27,7 @@ class DetailsViewModel @Inject constructor(
     private val dataStoreUseCase: DataStoreUseCases,
     private val addToCartUseCases: AddToCartUseCases,
     savedStateHandle: SavedStateHandle
-): ViewModel() {
+) : ViewModel() {
 
     private val _productDetails = MutableStateFlow<Resource<ShoppieItem>>(Resource.Loading(true))
     val productDetails = _productDetails.asStateFlow()
@@ -40,7 +40,6 @@ class DetailsViewModel @Inject constructor(
         val productId = savedStateHandle.get<String>("itemId")
         productId?.let { fetchProductDetails(it) }
     }
-
 
 
     private fun fetchProductDetails(id: String) = viewModelScope.launch {
@@ -68,15 +67,9 @@ class DetailsViewModel @Inject constructor(
     }
 
     private fun addToCart(id: String, token: String) = viewModelScope.launch {
-            addToCartUseCases(token, id).collect { result ->
-                _userDetails.value = result
-                if (result is Resource.Success) {
-                    result.data?.let { user ->
-                        dataStoreUseCase.saveCartCountUseCase(user.cart.size)
-                    }
-                }
-            }
-
+        addToCartUseCases(token, id).collect { result ->
+            _userDetails.value = result
+        }
     }
 
 }

@@ -4,7 +4,5 @@ data class DataStoreUseCases(
     val saveTokenUseCase: SaveTokenUseCase,
     val readTokenUseCase: ReadTokenUseCase,
     val saveOnBoardingUseCase: SaveOnBoardingUseCase,
-    val readOnBoardingUseCase: ReadOnBoardingUseCase,
-    val saveCartCountUseCase: SaveCartCountUseCase,
-    val readCartCountUseCase: ReadCartCountUseCase
+    val readOnBoardingUseCase: ReadOnBoardingUseCase
 )

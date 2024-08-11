@@ -1,5 +1,6 @@
 package com.example.shoppieclient.data.remote.api
 
+import com.example.shoppieclient.data.remote.dto.CartCountDto
 import com.example.shoppieclient.data.remote.dto.UserDto
 import com.example.shoppieclient.domain.auth.models.cart.AddToCartRequest
 import com.example.shoppieclient.domain.auth.models.home.ApiResponse
@@ -74,6 +75,11 @@ interface ShoppieApi {
         @Header("x-auth-token") token: String,
         @Body requestBody: AddToCartRequest
     ): UserDto
+
+    @GET("api/get-cart-count")
+    suspend fun getCartCount(
+        @Header("x-auth-token") token: String
+    ): CartCountDto
 
 
 }
