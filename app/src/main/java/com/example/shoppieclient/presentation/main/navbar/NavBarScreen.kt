@@ -31,12 +31,8 @@ val cartCount by navBarCartViewModel.cartCount.collectAsState()
     LaunchedEffect(navController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val showBottomNav = listOf(
-                BottomBarScreen.Home.route,
-                BottomBarScreen.Favorite.route,
-                BottomBarScreen.Notification.route,
-                BottomBarScreen.Profile.route
+                BottomBarScreen.Home.route
             ).contains(destination.route)
-
             if (showBottomNav) {
                 navBarCartViewModel.fetchCartCount()
             }
