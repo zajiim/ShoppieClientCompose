@@ -61,6 +61,7 @@ import com.example.shoppieclient.presentation.main.details.components.AddCartBot
 import com.example.shoppieclient.presentation.main.details.components.CustomSizeSection
 import com.example.shoppieclient.presentation.main.details.components.ProductImage
 import com.example.shoppieclient.presentation.main.details.components.ThumbnailImage
+import com.example.shoppieclient.presentation.main.navbar.NavBarCartViewModel
 import com.example.shoppieclient.ui.theme.BackGroundColor
 import com.example.shoppieclient.ui.theme.PrimaryBlue
 import com.example.shoppieclient.ui.theme.SubTitleColor
@@ -75,7 +76,6 @@ fun DetailsScreen(
     viewModel: DetailsViewModel,
     bottomPadding: PaddingValues
 ) {
-    val sharedViewModel: SharedViewModel = hiltViewModel()
     val productDetailsState by viewModel.productDetails.collectAsState()
     val pagerState = rememberPagerState(pageCount = { productDetailsState.data?.images?.size ?: 0 })
     var selectedImageIndex by remember { mutableIntStateOf(0) }

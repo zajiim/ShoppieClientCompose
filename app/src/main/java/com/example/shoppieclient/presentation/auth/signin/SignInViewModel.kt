@@ -27,7 +27,6 @@ class LoginViewModel @Inject constructor(
     private val validationUseCases: SignInValidationUseCases,
     private val shoppieRepo: ShoppieApi,
     private val dataStoreUseCases: DataStoreUseCases,
-    private val sharedViewModel: SharedViewModel
 ) : ViewModel() {
     private val _signInState: MutableState<SignInState> = mutableStateOf(SignInState())
     val signInState = _signInState

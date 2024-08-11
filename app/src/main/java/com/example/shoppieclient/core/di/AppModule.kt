@@ -3,6 +3,7 @@ package com.example.shoppieclient.core.di
 import android.app.Application
 import com.example.shoppieclient.data.datamanager.LocalUserManagerImpl
 import com.example.shoppieclient.data.remote.api.ShoppieApi
+import com.example.shoppieclient.data.repository.CartRepository
 import com.example.shoppieclient.data.repository.ShoppieRepoImpl
 import com.example.shoppieclient.domain.auth.repository.ShoppieRepo
 import com.example.shoppieclient.domain.auth.use_cases.details.AddToCartUseCases
@@ -31,6 +32,7 @@ import com.example.shoppieclient.domain.main.use_cases.SaveCartCountUseCase
 import com.example.shoppieclient.domain.main.use_cases.SaveOnBoardingUseCase
 import com.example.shoppieclient.domain.main.use_cases.SaveTokenUseCase
 import com.example.shoppieclient.presentation.auth.signin.SharedViewModel
+import com.example.shoppieclient.presentation.main.navbar.NavBarCartViewModel
 import com.example.shoppieclient.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -210,9 +212,10 @@ object ShoppieAppModule {
 
     @Provides
     @Singleton
-    fun provideSharedViewModel(): SharedViewModel {
-        return SharedViewModel()
+    fun provideCartRepository(dataStoreUseCases: DataStoreUseCases): CartRepository {
+        return CartRepository(dataStoreUseCases)
     }
+
 
 
 }

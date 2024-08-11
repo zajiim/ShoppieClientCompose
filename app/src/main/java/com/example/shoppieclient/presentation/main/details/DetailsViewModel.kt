@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.shoppieclient.data.repository.CartRepository
 import com.example.shoppieclient.domain.auth.models.signin.User
 import com.example.shoppieclient.domain.auth.use_cases.details.AddToCartUseCases
 import com.example.shoppieclient.domain.auth.use_cases.details.GetProductDetailsUseCase
@@ -26,14 +27,17 @@ class DetailsViewModel @Inject constructor(
     private val getProductDetailsUseCase: GetProductDetailsUseCase,
     private val dataStoreUseCase: DataStoreUseCases,
     private val addToCartUseCases: AddToCartUseCases,
+    private val cartRepository: CartRepository,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
     private val _productDetails = MutableStateFlow<Resource<ShoppieItem>>(Resource.Loading(true))
     val productDetails = _productDetails.asStateFlow()
 
-    private val _userDetails = MutableStateFlow<Resource<User>>(Resource.Loading(true))
-    val userDetails = _userDetails.asStateFlow()
+    private val _addToCartState = MutableStateFlow<Resource<User>>(Resource.Loading(false))
+    val addToCartState = _addToCartState.asStateFlow()
+
+    val cartCount = cartRepository.cartCount
 
 
     init {
@@ -68,11 +72,12 @@ class DetailsViewModel @Inject constructor(
     }
 
     private fun addToCart(id: String, token: String) = viewModelScope.launch {
+        _addToCartState.value = Resource.Loading(true)
             addToCartUseCases(token, id).collect { result ->
-                _userDetails.value = result
+                _addToCartState.value = result
                 if (result is Resource.Success) {
                     result.data?.let { user ->
-                        dataStoreUseCase.saveCartCountUseCase(user.cart.size)
+                        cartRepository.updateCartCount(user.cart.size)
                     }
                 }
             }

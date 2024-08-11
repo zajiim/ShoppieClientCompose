@@ -15,16 +15,15 @@ import com.example.shoppieclient.core.navigation.BottomNavGraph
 import com.example.shoppieclient.presentation.main.home.components.BottomNavBar
 
 
-@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun NavBarScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    cartViewModel: NavBarCartViewModel = hiltViewModel()
+    navBarCartViewModel: NavBarCartViewModel = hiltViewModel()
 ) {
 
-    val cartCount by cartViewModel.cartCount.collectAsState()
-    Log.e("cart_count", "count>>>> $cartCount: ")
+    val cartCount by navBarCartViewModel.cartCount.collectAsState()
+
     Scaffold(
         bottomBar = {
             BottomNavBar(
