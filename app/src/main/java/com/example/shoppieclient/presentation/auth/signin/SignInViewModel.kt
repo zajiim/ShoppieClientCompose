@@ -130,14 +130,10 @@ class LoginViewModel @Inject constructor(
                     )
                 )
 
-                Log.e(TAG, "after onLoginClick: >>>>>>>>${loginResult.cart.size}")
                 Log.e(TAG, loginResult.token)
 
                 dataStoreUseCases.saveTokenUseCase(loginResult.token)
 
-                dataStoreUseCases.saveCartCountUseCase(loginResult.cart.size)
-
-//                sharedViewModel.updateCartCount(loginResult.cart.size)
 
                 Log.e(TAG, "after datastore: >>>>>>>>")
 

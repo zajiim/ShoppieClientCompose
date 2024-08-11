@@ -41,17 +41,6 @@ class LocalUserManagerImpl(
         }
     }
 
-    override suspend fun saveCartCount(count: Int) {
-        context.datastore.edit { prefs ->
-            prefs[PreferencesKeys.CART_COUNT] = count
-        }
-    }
-
-    override fun readCartCount(): Flow<Int> {
-        return context.datastore.data.map { prefs ->
-            prefs[PreferencesKeys.CART_COUNT] ?: 0
-        }
-    }
 }
 
 private val Context.datastore: DataStore<Preferences> by preferencesDataStore(name = Constants.DATASTORE_NAME)
@@ -60,5 +49,4 @@ private val Context.datastore: DataStore<Preferences> by preferencesDataStore(na
 private object PreferencesKeys {
     val DATASTORE_TOKEN = stringPreferencesKey(name = Constants.DATASTORE_TOKEN)
     val ONBOARDING_VALUE = booleanPreferencesKey(name = Constants.ONBOARDING_VALUE)
-    val CART_COUNT = intPreferencesKey(name = Constants.CART_COUNT)
 }

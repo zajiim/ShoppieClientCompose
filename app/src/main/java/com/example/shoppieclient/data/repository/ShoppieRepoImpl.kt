@@ -1,10 +1,12 @@
 package com.example.shoppieclient.data.repository
 
 import android.util.Log
+import com.example.shoppieclient.data.mapper.signin.toCartCount
 import com.example.shoppieclient.data.mapper.signin.toUser
 import com.example.shoppieclient.data.mapper.toShoppieItem
 import com.example.shoppieclient.data.remote.api.ShoppieApi
 import com.example.shoppieclient.domain.auth.models.cart.AddToCartRequest
+import com.example.shoppieclient.domain.auth.models.home.CartCount
 import com.example.shoppieclient.domain.auth.models.signin.SignInRequest
 import com.example.shoppieclient.domain.auth.models.signin.TokenValidationResponse
 import com.example.shoppieclient.domain.auth.models.signin.User
@@ -153,6 +155,17 @@ class ShoppieRepoImpl @Inject constructor(
             emit(Resource.Success(userItem))
         } catch (e: Exception) {
             emit(Resource.Error(message = e.message.toString()))
+        }
+    }
+
+    override fun getCartCount(token: String): Flow<Resource<CartCount>> = flow {
+        emit(Resource.Loading(true))
+        try {
+            val response = shoppieApi.getCartCount(token)
+            emit(Resource.Success(response.toCartCount()))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.message.toString()))
+
         }
     }
 
