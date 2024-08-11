@@ -2,6 +2,7 @@ package com.example.shoppieclient.data.remote.api
 
 import com.example.shoppieclient.data.remote.dto.CartCountDto
 import com.example.shoppieclient.data.remote.dto.UserDto
+import com.example.shoppieclient.data.remote.dto.cart.CartDto
 import com.example.shoppieclient.domain.auth.models.cart.AddToCartRequest
 import com.example.shoppieclient.domain.auth.models.home.ApiResponse
 import com.example.shoppieclient.domain.auth.models.home.ProductDetailsResponse
@@ -14,6 +15,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ShoppieApi {
 
@@ -81,5 +83,11 @@ interface ShoppieApi {
         @Header("x-auth-token") token: String
     ): CartCountDto
 
+    @GET("api/get-all-cart-items")
+    suspend fun getAllCartItems(
+        @Header("x-auth-token") token: String,
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+    ): CartDto
 
 }

@@ -15,6 +15,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.shoppieclient.domain.models.ShoppieItem
 import com.example.shoppieclient.presentation.common.EmptyScreen
 import com.example.shoppieclient.presentation.main.cart.components.CustomCartCardList
@@ -30,7 +31,8 @@ fun CartScreen(
     cartViewModel: CartViewModel
 ) {
 
-    val cartItems = cartViewModel.myCartItems
+    val cartItems = cartViewModel.cartItems.collectAsLazyPagingItems()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -59,12 +61,12 @@ fun CartScreen(
 
             CustomCartCardList(
                 modifier = Modifier.fillMaxWidth(),
-                shoppieItems = cartItems
+                cartItems = cartItems
             )
 
 
 
-            if (cartItems.isEmpty()) {
+            if (cartItems.itemCount == 0) {
                 EmptyScreen(
                     modifier = Modifier
                         .fillMaxSize()

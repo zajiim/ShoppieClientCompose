@@ -7,4 +7,6 @@ object Constants {
     const val DATASTORE_TOKEN = "datastore_token"
     const val ONBOARDING_VALUE = "onboarding_value"
     const val CART_COUNT = "cart_count"
+    const val PER_PAGE_ITEMS = 10
+    const val INITIAL_PAGE_INDEX = 1
 }

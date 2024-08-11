@@ -5,6 +5,7 @@ import com.example.shoppieclient.data.datamanager.LocalUserManagerImpl
 import com.example.shoppieclient.data.remote.api.ShoppieApi
 import com.example.shoppieclient.data.repository.ShoppieRepoImpl
 import com.example.shoppieclient.domain.auth.repository.ShoppieRepo
+import com.example.shoppieclient.domain.auth.use_cases.cart.GetCartUseCase
 import com.example.shoppieclient.domain.auth.use_cases.details.AddToCartUseCases
 import com.example.shoppieclient.domain.auth.use_cases.details.GetProductDetailsUseCase
 import com.example.shoppieclient.domain.auth.use_cases.home.GetNewArrivalsUseCase
@@ -210,6 +211,12 @@ object ShoppieAppModule {
     @Singleton
     fun provideGetCartCountUseCase(repo: ShoppieRepo): GetCartCountUseCase {
         return GetCartCountUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCartUseCase(repo: ShoppieRepo): GetCartUseCase {
+        return GetCartUseCase(repo)
     }
 
 

@@ -23,12 +23,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.shoppieclient.domain.auth.models.cart.Products
 import com.example.shoppieclient.domain.models.ShoppieItem
 
 @Composable
 fun CustomCartCardItem(
     modifier: Modifier = Modifier,
-    shoppieItem: ShoppieItem
+    cartItem: Products
 ) {
 
     Row(
@@ -38,8 +39,8 @@ fun CustomCartCardItem(
     ) {
         AsyncImage(
             modifier = Modifier.fillMaxHeight(),
-            model = shoppieItem.images?.get(0),
-            contentDescription = shoppieItem.name,
+            model = cartItem.images?.get(0) ?: "",
+            contentDescription = cartItem.name,
             contentScale = ContentScale.FillHeight,
         )
 
@@ -48,12 +49,12 @@ fun CustomCartCardItem(
             modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = shoppieItem.name!!, style = TextStyle(
+                text = cartItem.name, style = TextStyle(
                     fontSize = 16.sp, color = Color.Black
                 )
             )
             Text(
-                text = "$${shoppieItem.price}", style = TextStyle(
+                text = "$${cartItem.price}", style = TextStyle(
                     fontSize = 14.sp, color = Color.Black
                 )
             )

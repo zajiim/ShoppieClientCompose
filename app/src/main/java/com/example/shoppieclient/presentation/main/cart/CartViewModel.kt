@@ -1,36 +1,48 @@
 package com.example.shoppieclient.presentation.main.cart
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import com.example.shoppieclient.domain.auth.models.cart.Products
+import com.example.shoppieclient.domain.auth.repository.ShoppieRepo
+import com.example.shoppieclient.domain.auth.use_cases.cart.GetCartUseCase
+import com.example.shoppieclient.domain.main.use_cases.DataStoreUseCases
 import com.example.shoppieclient.domain.models.ShoppieItem
+import com.example.shoppieclient.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CartViewModel @Inject constructor() : ViewModel() {
+class CartViewModel @Inject constructor(
+    private val shoppieRepo: ShoppieRepo,
+    private val dataStoreUseCases: DataStoreUseCases,
+    private val getCartUseCase: GetCartUseCase
+) : ViewModel() {
+    private val _cartItems = MutableStateFlow<PagingData<Products>>(PagingData.empty())
+    val cartItems = _cartItems.asStateFlow()
 
-    val myCartItems: List<ShoppieItem> = listOf(
-        ShoppieItem(
-            id = "1",
-            productId = "dwerfdf",
-            images = listOf("https://m.media-amazon.com/images/I/614aiM56siL._SL1500_.jpg"),
-            category = "BEST SELLING",
-            name = "Nike",
-            brand = "Nike",
-            price = 34,
-            description = "",
-            quantity = 5
-        ),
+    init {
+        fetchCartItems()
+    }
 
-        ShoppieItem(
-            id = "2",
-            productId = "dweadarfdf",
-            images = listOf("https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/99486859-0ff3-46b4-949b-2d16af2ad421/custom-nike-dunk-high-by-you-shoes.png"),
-            category = "NEW ARRIVAL",
-            name = "Nike",
-            brand = "Nike",
-            price = 34,
-            description = "",
-            quantity = 5
-        ),
-    )
+    private fun fetchCartItems() = viewModelScope.launch {
+        val token = dataStoreUseCases.readTokenUseCase().firstOrNull()
+
+        if (token != null) {
+            getCartUseCase(
+                token = token,
+                page = Constants.INITIAL_PAGE_INDEX,
+                limit = Constants.PER_PAGE_ITEMS
+            ).collect { cartsPagingData ->
+                _cartItems.value = cartsPagingData
+            }
+        } else {
+            _cartItems.value = PagingData.empty()
+        }
+    }
+
 }

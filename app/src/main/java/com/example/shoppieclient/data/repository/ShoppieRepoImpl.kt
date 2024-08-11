@@ -1,11 +1,16 @@
 package com.example.shoppieclient.data.repository
 
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.shoppieclient.data.mapper.signin.toCartCount
 import com.example.shoppieclient.data.mapper.signin.toUser
 import com.example.shoppieclient.data.mapper.toShoppieItem
+import com.example.shoppieclient.data.paging.CartsPagingSource
 import com.example.shoppieclient.data.remote.api.ShoppieApi
 import com.example.shoppieclient.domain.auth.models.cart.AddToCartRequest
+import com.example.shoppieclient.domain.auth.models.cart.Products
 import com.example.shoppieclient.domain.auth.models.home.CartCount
 import com.example.shoppieclient.domain.auth.models.signin.SignInRequest
 import com.example.shoppieclient.domain.auth.models.signin.TokenValidationResponse
@@ -14,6 +19,7 @@ import com.example.shoppieclient.domain.auth.models.signup.SignUpRequest
 import com.example.shoppieclient.domain.auth.models.signup.SignUpResponse
 import com.example.shoppieclient.domain.auth.repository.ShoppieRepo
 import com.example.shoppieclient.domain.models.ShoppieItem
+import com.example.shoppieclient.utils.Constants
 import com.example.shoppieclient.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -167,6 +173,21 @@ class ShoppieRepoImpl @Inject constructor(
             emit(Resource.Error(message = e.message.toString()))
 
         }
+    }
+
+    override fun getCartItems(token: String, page: Int, limit: Int): Flow<PagingData<Products>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = Constants.PER_PAGE_ITEMS
+            ),
+            pagingSourceFactory = {
+                CartsPagingSource(
+                    shoppieApi = shoppieApi,
+                    token = token
+                )
+            }
+        ).flow
+
     }
 
 
